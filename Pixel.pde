@@ -22,11 +22,8 @@ public class PixelController {
 	
 	
 	void draw() {	
-		
-		//fill(0);						
-		//rect(originX, originY, 320, 240);					// draw black background rectangle
-		
-		updatePixelColorsWithCurrentFrame();				//populate pixels with colors from current frame
+				
+		updateaAllPixelColorsWithCurrentFrame(displayManager.animation.currentFrame);				//populate pixels with colors from current frame
 	}
 	
 	
@@ -37,17 +34,40 @@ public class PixelController {
 		}
 	}
 	
-	void updatePixelColorsWithCurrentFrame() {
+	void updateaAllPixelColorsWithCurrentFrame(int _frameToGetColorsFrom) {
 
+		
+		_frameToGetColorsFrom = _frameToGetColorsFrom - 1;		// adjusting frame number so it matches actual frame value 1-10, rather than 0-9
+	
+		displayManager.canvas.allFrames.get(_frameToGetColorsFrom).frameGraphic.beginDraw();
+		displayManager.canvas.allFrames.get(_frameToGetColorsFrom).frameGraphic.loadPixels();
+		
+		for(int i = 0; i < numPixels; i++) {			
+			allPixels.get(i).allPixelColors[_frameToGetColorsFrom] = displayManager.canvas.allFrames.get(_frameToGetColorsFrom).frameGraphic.pixels[allPixels.get(i).myCenterInPixelArray()];
+		}
+		
+		displayManager.canvas.allFrames.get(_frameToGetColorsFrom).frameGraphic.endDraw();
+		
+
+		/*/////// This could be made more efficient by loading all the pixels colors with a single frame load
+		///////// code above does that
 		//cycle through all pixels
 		for(int i = 0; i < numPixels; i++) {
 			// and query canvas for their color. pass to canvas the pixel location
 			allPixels.get(i).glassC = displayManager.canvas.getColorFromCurrentFrame(allPixels.get(i).myCenterInPixelArray());
 			
-			//allPixels.get(i).glassC = displayManager.canvas.allFrames.get(currenFrame).//displayManager.canvas.getColorFromCurrentFrame(allPixels.get(i).myCenterInPixelArray());
-
-		}	
+		}
+		*/	
 	}
+	
+	void updateAllPixelsWithNewFrame() {
+		
+		for (int i = 0; i < numFrames; i++) {
+			updateaAllPixelColorsWithCurrentFrame(i);
+		}
+		
+	}
+	
 	
 }
 
@@ -71,7 +91,6 @@ public class Pixel {
   Point centroid;
   	
   color[] allPixelColors;
-
 
   Pixel(int _id, int _x, int _y, int _originX, int _originY) {
     id = _id;
@@ -106,7 +125,7 @@ public class Pixel {
 	     	fill(rimC);
 	     	rect(0,0,w,h); 
      
-	     	fill(glassC);
+	     	fill(allPixelColors[displayManager.animation.currentFrame-1]);
 	     	rect(border,border,w-border*2,h-border*2);
 			noStroke();
 

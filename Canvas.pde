@@ -269,11 +269,12 @@ public class Canvas {
 		
 	}*/
 	
+	/*  // got rid of encapsulation to make code faster
 	color getColorFromCurrentFrame(int _pixelLocation) {
 		
 		return allFrames.get(currentFrame).getColor(_pixelLocation);
 	}
-	
+	*/
 	
 	void saveCurrentFrame(String _filename) {
 		allFrames.get(currentFrame).frameGraphic.save("data/saved/"+ _filename +".png");
@@ -291,7 +292,7 @@ public class Canvas {
 		
 		for (int i = 0; i < numFrames; i++) {
 			tempImage = loadImage(_folderName+"/frame"+ i +".png");
-			allFrames.get(i).loadImage(tempImage);
+			allFrames.get(i).loadImageIntoFrameBuffer(tempImage);
 		}
 	}
 	
@@ -300,7 +301,7 @@ public class Canvas {
 	void loadImageInAllFrames(PImage _selectedImage) {
 		
 		for (int i = 0; i < numFrames; i++) {
-			allFrames.get(i).loadImage(_selectedImage);
+			allFrames.get(i).loadImageIntoFrameBuffer(_selectedImage);
 		}	
 	}
 	
@@ -332,7 +333,7 @@ public class Canvas {
 		_loadedImage.alpha(alphaChannel);
 		
 		for (int i = 0; i < numFrames; i++) {		
-			allFrames.get(i).loadImage(_loadedImage);		
+			allFrames.get(i).loadImageIntoFrameBuffer(_loadedImage);		
 		}
 		
 
@@ -379,7 +380,7 @@ public class Canvas {
 			tempImage.updatePixels();
 			tempImage.endDraw();
 			
-			allFrames.get(i).loadImage(tempImage);
+			allFrames.get(i).loadImageIntoFrameBuffer(tempImage);
 		}		
 	}
 	
@@ -422,7 +423,7 @@ public class Canvas {
 			tempImage.updatePixels();
 			tempImage.endDraw();
 			
-			allFrames.get(i).loadImage(tempImage);
+			allFrames.get(i).loadImageIntoFrameBuffer(tempImage);
 		}
 	}
 
@@ -503,11 +504,13 @@ public class Frame {
 		frameGraphic.endDraw();
 	}
 	
-	void loadImage(PImage _selectedImage) {
+	void loadImageIntoFrameBuffer(PImage _selectedImage) {
 		frameGraphic.beginDraw();
 		frameGraphic.fill(0);
 		frameGraphic.image(_selectedImage,0,0);
 		frameGraphic.endDraw();
+		
+		pixelController.updateAllPixelsWithNewFrame();
 	}
 	
 	/*
@@ -522,6 +525,7 @@ public class Frame {
 	}
 	*/
 	
+	/*/// INEFFICIENT. It was replaced for a single frame call that gets color for all pixels at once
 	color getColor(int _pixelLocation) {
 		
 		color tempColor;
@@ -533,6 +537,7 @@ public class Frame {
 
 		return tempColor;	
 	}
+	*/
 	
 	
 	int[] returnPixelArray() {

@@ -41,7 +41,7 @@ PApplet app = this;
 
 
 
-int numPixels = 20;		// pixels 1-3
+int numPixels = 10;		// pixels 1-3
 int numFrames = 10;		// frames 0-9
 
 Vector<Pixel> allPixels = new Vector<Pixel>();

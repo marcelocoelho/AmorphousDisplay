@@ -13,6 +13,8 @@ public void keyPressed() {
 
 	if(key == 'h') loadPixelsRandomly();
 	
+	if(key == 's') transmitAndPlayPhysicalPixels();
+	
 }
 
 
@@ -24,7 +26,22 @@ void loadPixelsRandomly() {
 		allPixels.get(i).w = 20;			
 		allPixels.get(i).h = 20;	
 		allPixels.get(i).scanned = true; // this displays the pixels	
-	}
+	}	
+}
+
+
+void transmitAndPlayPhysicalPixels() {
 	
+	// two-dimensional array to store all pixel frames
+	int[][] pixelAnimation = new int[numPixels][numFrames];
 	
+	/*
+	// load all images
+	for ()
+		displayManager.allFrames.get(i)
+		
+
+		// load all pixels
+		allPixels.get(i).
+	*/
 }
