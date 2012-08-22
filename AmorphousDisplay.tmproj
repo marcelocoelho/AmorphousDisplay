@@ -3,26 +3,26 @@
 <plist version="1.0">
 <dict>
 	<key>currentDocument</key>
-	<string>Pixel.pde</string>
+	<string>Keyboard.pde</string>
 	<key>documents</key>
 	<array>
 		<dict>
 			<key>filename</key>
 			<string>ColorPalette.pde</string>
 			<key>lastUsed</key>
-			<date>2012-08-20T22:08:44Z</date>
+			<date>2012-08-21T04:06:10Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>Canvas.pde</string>
 			<key>lastUsed</key>
-			<date>2012-08-20T22:08:38Z</date>
+			<date>2012-08-22T02:46:08Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>AmorphousDisplay.pde</string>
 			<key>lastUsed</key>
-			<date>2012-08-20T22:08:29Z</date>
+			<date>2012-08-22T01:09:49Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -34,15 +34,13 @@
 			<key>filename</key>
 			<string>LoadImage.pde</string>
 			<key>lastUsed</key>
-			<date>2012-08-20T22:08:48Z</date>
+			<date>2012-08-22T02:43:31Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>Pixel.pde</string>
 			<key>lastUsed</key>
-			<date>2012-08-20T22:08:48Z</date>
-			<key>selected</key>
-			<true/>
+			<date>2012-08-22T02:46:12Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -58,7 +56,9 @@
 			<key>filename</key>
 			<string>Keyboard.pde</string>
 			<key>lastUsed</key>
-			<date>2012-08-20T22:08:45Z</date>
+			<date>2012-08-22T02:46:12Z</date>
+			<key>selected</key>
+			<true/>
 		</dict>
 	</array>
 	<key>fileHierarchyDrawerWidth</key>
@@ -70,28 +70,44 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>18</integer>
+				<integer>30</integer>
 				<key>line</key>
-				<integer>43</integer>
+				<integer>22</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>26</integer>
+			<integer>14</integer>
 		</dict>
 		<key>Canvas.pde</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>0</integer>
+				<integer>17</integer>
 				<key>line</key>
-				<integer>348</integer>
+				<integer>543</integer>
 			</dict>
+			<key>columnSelection</key>
+			<false/>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>0</integer>
+			<integer>493</integer>
+			<key>selectFrom</key>
+			<dict>
+				<key>column</key>
+				<integer>7</integer>
+				<key>line</key>
+				<integer>543</integer>
+			</dict>
+			<key>selectTo</key>
+			<dict>
+				<key>column</key>
+				<integer>23</integer>
+				<key>line</key>
+				<integer>543</integer>
+			</dict>
 		</dict>
 		<key>ColorPalette.pde</key>
 		<dict>
@@ -112,14 +128,14 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>39</integer>
+				<integer>57</integer>
 				<key>line</key>
-				<integer>22</integer>
+				<integer>50</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>0</integer>
+			<integer>10</integer>
 		</dict>
 		<key>LoadImage.pde</key>
 		<dict>
@@ -135,7 +151,7 @@
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>0</integer>
+			<integer>120</integer>
 			<key>selectFrom</key>
 			<dict>
 				<key>column</key>
@@ -170,14 +186,14 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>8</integer>
+				<integer>65</integer>
 				<key>line</key>
-				<integer>104</integer>
+				<integer>34</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>92</integer>
+			<integer>0</integer>
 		</dict>
 		<key>Serial.pde</key>
 		<dict>
@@ -212,16 +228,16 @@
 	<array>
 		<string>AmorphousDisplay.pde</string>
 		<string>Canvas.pde</string>
-		<string>ColorPalette.pde</string>
-		<string>Keyboard.pde</string>
-		<string>LoadImage.pde</string>
 		<string>Pixel.pde</string>
+		<string>LoadImage.pde</string>
+		<string>Keyboard.pde</string>
+		<string>ColorPalette.pde</string>
 		<string>Vision.pde</string>
 		<string>Serial.pde</string>
 	</array>
 	<key>showFileHierarchyDrawer</key>
 	<true/>
 	<key>windowFrame</key>
-	<string>{{498, 341}, {1046, 874}}</string>
+	<string>{{44, 4}, {761, 874}}</string>
 </dict>
 </plist>

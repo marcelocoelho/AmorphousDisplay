@@ -14,6 +14,8 @@ public void keyPressed() {
 	if(key == 'h') loadPixelsRandomly();
 	
 	if(key == 's') transmitAndPlayPhysicalPixels();
+
+	if(key == 'd') debug();
 	
 }
 
@@ -30,6 +32,14 @@ void loadPixelsRandomly() {
 }
 
 
+boolean debug = false;
+void debug() {
+	
+	debug = !debug;
+	
+}
+
+
 void transmitAndPlayPhysicalPixels() {
 	
 	// two-dimensional array to store all pixel frames
@@ -38,7 +48,7 @@ void transmitAndPlayPhysicalPixels() {
 	/*
 	// load all images
 	for ()
-		displayManager.allFrames.get(i)
+		displayManager.canvas.allFrames.get(i).returnPixelArray
 		
 
 		// load all pixels

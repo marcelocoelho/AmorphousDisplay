@@ -16,16 +16,8 @@ public class PixelController {
 		
 		originX = _originX;
 		originY = _originY;
+	}
 		
-		app.registerDraw(this);
-	}
-	
-	
-	void draw() {	
-				
-		updateaAllPixelColorsWithCurrentFrame(displayManager.animation.currentFrame);				//populate pixels with colors from current frame
-	}
-	
 	
 	void init() {
 
@@ -34,39 +26,69 @@ public class PixelController {
 		}
 	}
 	
-	void updateaAllPixelColorsWithCurrentFrame(int _frameToGetColorsFrom) {
+	void updateaAllPixelColorsWithCurrentFrame(PGraphics _frameGraphic) {
 
-		
-		_frameToGetColorsFrom = _frameToGetColorsFrom - 1;		// adjusting frame number so it matches actual frame value 1-10, rather than 0-9
-	
-		displayManager.canvas.allFrames.get(_frameToGetColorsFrom).frameGraphic.beginDraw();
-		displayManager.canvas.allFrames.get(_frameToGetColorsFrom).frameGraphic.loadPixels();
+		_frameGraphic.beginDraw();
+		_frameGraphic.loadPixels();
 		
 		for(int i = 0; i < numPixels; i++) {			
-			allPixels.get(i).allPixelColors[_frameToGetColorsFrom] = displayManager.canvas.allFrames.get(_frameToGetColorsFrom).frameGraphic.pixels[allPixels.get(i).myCenterInPixelArray()];
-		}
-		
-		displayManager.canvas.allFrames.get(_frameToGetColorsFrom).frameGraphic.endDraw();
-		
-
-		/*/////// This could be made more efficient by loading all the pixels colors with a single frame load
-		///////// code above does that
-		//cycle through all pixels
-		for(int i = 0; i < numPixels; i++) {
-			// and query canvas for their color. pass to canvas the pixel location
-			allPixels.get(i).glassC = displayManager.canvas.getColorFromCurrentFrame(allPixels.get(i).myCenterInPixelArray());
+			allPixels.get(i).glassC = _frameGraphic.pixels[allPixels.get(i).myCenterInPixelArray()];
 			
 		}
-		*/	
-	}
-	
-	void updateAllPixelsWithNewFrame() {
 		
-		for (int i = 0; i < numFrames; i++) {
-			updateaAllPixelColorsWithCurrentFrame(i);
+		_frameGraphic.endDraw();		
+		
+	}
+
+
+
+	/*
+	void updateaAllPixelColorsWithCurrentFrame(PGraphics _frameGraphic, int _f) {
+		
+		_frameGraphic.beginDraw();
+		_frameGraphic.loadPixels();
+		
+		for(int i = 0; i < numPixels; i++) {			
+			allPixels.get(i).allPixelColors[_f] = _frameGraphic.pixels[allPixels.get(i).myCenterInPixelArray()];
+			
 		}
 		
+		_frameGraphic.endDraw();	
 	}
+	*/
+	
+	/*void updateAllPixelsWithSingleFrame(PGraphics _frameGraphic) {
+		
+		
+		for (int f = 0; f < numFrames; f++) {
+
+			_frameGraphic.beginDraw();
+			_frameGraphic.loadPixels();
+
+			for(int i = 0; i < numPixels; i++) {			
+				allPixels.get(i).allPixelColors[f] = _frameGraphic.pixels[allPixels.get(i).myCenterInPixelArray()];
+
+			}
+
+			_frameGraphic.endDraw();
+			
+			
+		}
+		
+		
+		
+		
+		
+		//for (int f = 0; f < numFrames; f++) {
+		//	//allPixels.get(i).allPixelColors[_f] = _frameGraphic.pixels[allPixels.get(i).myCenterInPixelArray()];
+		//	
+		//	updateaAllPixelColorsWithCurrentFrame(_frameGraphic, f);
+		//	
+		//	println("4");
+		//}	
+		
+	}*/
+	
 	
 	
 }
@@ -125,8 +147,9 @@ public class Pixel {
 	     	fill(rimC);
 	     	rect(0,0,w,h); 
      
-	     	fill(allPixelColors[displayManager.animation.currentFrame-1]);
-	     	rect(border,border,w-border*2,h-border*2);
+	     	//fill(allPixelColors[displayManager.animation.currentFrame-1]);
+	     	fill(glassC);
+			rect(border,border,w-border*2,h-border*2);
 			noStroke();
 
 			if (labelWithId) {
@@ -141,11 +164,23 @@ public class Pixel {
     }
   }
   
+	void debug() {
+		pushMatrix();
+		translate(400+x, 600+y);
+		stroke(125);
+     	fill(rimC);
+     	rect(0,0,w,h); 
+ 
+     	fill(allPixelColors[8]);
+     	rect(border,border,w-border*2,h-border*2);
+		noStroke();	
+		popMatrix();
+	}
+
 
 	int myCenterInPixelArray() {
 
 		int myCenter = x+10 + (320*(y+10));
-		
 		return myCenter;	
 	}
 

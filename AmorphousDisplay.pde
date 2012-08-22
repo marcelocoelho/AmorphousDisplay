@@ -3,7 +3,11 @@
 
 * TO DO
 *	
-*	- Fix video saving and video loading
+*	- TWO BUGS TO FIX
+*		2- when frames are cleared, pixels retain their color information
+*		3- if pixel positions are loaded after image was loaded, they won't get the new image colors unless I go to their frame
+*		1- when I load an alpha channel (after loading an image) and scroll the animations, pixels will blink colors of last frame
+*			- this stops after I've scrolled through all frames in the animation, meaning the pixels are updated with the appropriate color
 *	- write code to stream all frames to pixels
 *	
 *	

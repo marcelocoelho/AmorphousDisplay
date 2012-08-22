@@ -46,13 +46,8 @@ public class DisplayManager {
 		
 		root = _root;
 		
-		//w = 320;		
-		//h = 240;
-		
 		startPosition = new PVector(appMarginSides,appMarginTop);		// change these to modify interface look
 		dimension = new PVector(320,240);
-		//x = 40;
-		//y = 200;
 		
 
 		canvas = new Canvas(root, startPosition, dimension);		
@@ -64,7 +59,9 @@ public class DisplayManager {
 	
 	
 	void draw() {
-		
+	
+		canvas.draw();
+		pixelController.updateaAllPixelColorsWithCurrentFrame( canvas.allFrames.get(animation.currentFrame-1).frameGraphic);
 			
 	}
 }
@@ -129,19 +126,6 @@ public class Animation {
 		
 		isPlaying = !isPlaying;
 
-	}
-	
-	void pause() {
-		
-		//isPlaying = false;
-	}
-	
-	void stop() {
-		
-	}
-	
-	void resume() {
-		
 	}
 	
 }
@@ -241,7 +225,7 @@ public class Canvas {
 			allFrames.get(i).init();
 		}
 		
-		app.registerDraw(this);
+		//app.registerDraw(this);
 		app.registerMouseEvent(this);
 	}
 	
@@ -250,6 +234,20 @@ public class Canvas {
 		// draw current frame
 		currentFrame = displayManager.animation.currentFrame-1;
 		allFrames.get(currentFrame).drawFrame();
+				
+		// this works but with a delay, I moved this to displayManager to see if it is faster
+		//pixelController.updateaAllPixelColorsWithCurrentFrame(allFrames.get(currentFrame).frameGraphic, currentFrame);
+
+		
+		
+		if (debug) {
+			image(allFrames.get(8).frameGraphic, 400, 600);
+			
+			for (int i = 0; i < numPixels; i++) {
+				allPixels.get(i).debug();
+			}
+			
+		}
 		
 	}
 	
@@ -352,7 +350,7 @@ public class Canvas {
 		alphaImage.image(_alphaImage, 0, 0);
 		alphaImage.filter(GRAY);
 		alphaImage.filter(POSTERIZE, numFrames);  		
-		alphaImage.endDraw();
+		alphaImage.endDraw(); 
 		
 		for (int i = 0; i < numFrames; i++) {
 
@@ -363,7 +361,6 @@ public class Canvas {
 			tempImage.loadPixels();	
 			
 			float boundary = map(i, 0, 9, 0, 255);
-			//println(int(boundary));
 			
 			
 			for (int j = 0; j < tempImage.pixels.length; j++) {
@@ -374,10 +371,9 @@ public class Canvas {
 			     tempImage.pixels[j] = color(255,255,255,0);     
 			   }
 			}
-			
-			//_alphaImage.updatePixels();
-			
+						
 			tempImage.updatePixels();
+			
 			tempImage.endDraw();
 			
 			allFrames.get(i).loadImageIntoFrameBuffer(tempImage);
@@ -486,6 +482,8 @@ public class Frame {
 		frameGraphic.beginDraw();
 		frameGraphic.background(0);		
 		frameGraphic.endDraw();	
+		
+		//pixelController.updateAllPixelsWithSingleFrame(frameGraphic);
 	}
 	
 	
@@ -506,11 +504,14 @@ public class Frame {
 	
 	void loadImageIntoFrameBuffer(PImage _selectedImage) {
 		frameGraphic.beginDraw();
-		frameGraphic.fill(0);
+		//frameGraphic.fill(0);								// this allows a new frame to be overlaid the previous one, change to backgroun(0) to do otherwise
 		frameGraphic.image(_selectedImage,0,0);
 		frameGraphic.endDraw();
 		
-		pixelController.updateAllPixelsWithNewFrame();
+		//println("3");
+		
+		
+		//pixelController.updateAllPixelsWithSingleFrame(frameGraphic);
 	}
 	
 	/*
@@ -550,6 +551,8 @@ public class Frame {
 		for (int j = 0; j < frameGraphic.pixels.length; j++) {
 			tempArray[j] = frameGraphic.pixels[j];
 		}
+		
+		frameGraphic.endDraw();		
 		
 		return tempArray;
 	}
