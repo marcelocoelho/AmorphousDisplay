@@ -100,14 +100,17 @@ public class Animation {
 		
 		if (isPlaying) {
 			controlP5.getController("playPause").setCaptionLabel("pause");
-			if (currentFrame > finalFrame) {
+			println(currentFrame);
+
+			runningTime = runningTime + scrollSpeed/frameRate;
+			
+			if (int(runningTime) > finalFrame) {
 				currentFrame = 1;
-				runningTime = 1;
+				runningTime = 1;				
 			} else {
-				runningTime = runningTime+scrollSpeed/frameRate;
-				currentFrame = int(runningTime);
-				//currentFrame = int(currentFrame+scrollSpeed/frameRate);
+				currentFrame = int(runningTime);				
 			}
+			
 		} else {
 			controlP5.getController("playPause").setCaptionLabel("play");
 			currentFrame = (int)controlP5.getController("browser").getValue();
@@ -233,6 +236,7 @@ public class Canvas {
 		
 		// draw current frame
 		currentFrame = displayManager.animation.currentFrame-1;
+		
 		allFrames.get(currentFrame).drawFrame();
 				
 		// this works but with a delay, I moved this to displayManager to see if it is faster
@@ -425,7 +429,6 @@ public class Canvas {
 
 
 	
-	
 	void mouseEvent(MouseEvent event) {
 	
 		switch (event.getID()) {
@@ -504,14 +507,9 @@ public class Frame {
 	
 	void loadImageIntoFrameBuffer(PImage _selectedImage) {
 		frameGraphic.beginDraw();
-		//frameGraphic.fill(0);								// this allows a new frame to be overlaid the previous one, change to backgroun(0) to do otherwise
+		//frameGraphic.background(0);								// uncommenting this will make it so that alpha image won't blend into previously loaded image
 		frameGraphic.image(_selectedImage,0,0);
 		frameGraphic.endDraw();
-		
-		//println("3");
-		
-		
-		//pixelController.updateAllPixelsWithSingleFrame(frameGraphic);
 	}
 	
 	/*
