@@ -57,8 +57,23 @@ DisplayManager displayManager;
 PixelController pixelController;
 
 
+// INTERFACE POSITIONING STUFF, ACCESSIBLE BY ALL
+int frameWidth = 320;
+int frameHeight = 240;
+
+
 int appMarginTop = 30;
 int appMarginSides = 30;
+
+int leftColumnX = 80;
+int leftColumnY = 50;
+
+int middleColumnX = leftColumnX*2 + frameWidth;
+int middleColumnY = leftColumnY;
+
+int rightColumnX = leftColumnX*3 + frameWidth*2;
+int rightColumnY = leftColumnY;
+
 
 
 void setup() {
@@ -71,7 +86,7 @@ void setup() {
 	
 	displayManager = new DisplayManager(this);
 	
-	pixelController = new PixelController(appMarginSides, appMarginTop);
+	pixelController = new PixelController();
 	pixelController.init();
 	
 	

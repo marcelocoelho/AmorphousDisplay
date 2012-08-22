@@ -84,8 +84,23 @@ DisplayManager displayManager;
 PixelController pixelController;
 
 
+// INTERFACE POSITIONING STUFF, ACCESSIBLE BY ALL
+int frameWidth = 320;
+int frameHeight = 240;
+
+
 int appMarginTop = 30;
 int appMarginSides = 30;
+
+int leftColumnX = 80;
+int leftColumnY = 50;
+
+int middleColumnX = leftColumnX*2 + frameWidth;
+int middleColumnY = leftColumnY;
+
+int rightColumnX = leftColumnX*3 + frameWidth*2;
+int rightColumnY = leftColumnY;
+
 
 
 public void setup() {
@@ -98,7 +113,7 @@ public void setup() {
 	
 	displayManager = new DisplayManager(this);
 	
-	pixelController = new PixelController(appMarginSides, appMarginTop);
+	pixelController = new PixelController();
 	pixelController.init();
 	
 	
@@ -166,15 +181,15 @@ public class DisplayManager {
 	
 	int w, h;
 	
-	PVector startPosition;	// where to start drawing things
-	PVector dimension;		// size of drawing and image area. this is not a vector per se.
+	PVector startPosition;		// where to start drawing things
+	PVector dimension;			// size of drawing and image area. this is not a vector per se.
 	
 	DisplayManager(PApplet _root) {
 		
 		root = _root;
 		
-		startPosition = new PVector(appMarginSides,appMarginTop);		// change these to modify interface look
-		dimension = new PVector(320,240);
+		startPosition = new PVector(leftColumnX, leftColumnY);		// change these to modify interface look
+		dimension = new PVector(frameWidth, frameHeight);
 		
 
 		canvas = new Canvas(root, startPosition, dimension);		
@@ -188,7 +203,7 @@ public class DisplayManager {
 	public void draw() {
 	
 		canvas.draw();
-		pixelController.updateaAllPixelColorsWithCurrentFrame( canvas.allFrames.get(animation.currentFrame-1).frameGraphic);
+		//pixelController.updateaAllPixelColorsWithCurrentFrame( canvas.allFrames.get(animation.currentFrame-1).frameGraphic);
 			
 	}
 }
@@ -679,6 +694,8 @@ public class Frame {
 			tempArray[j] = frameGraphic.pixels[j];
 		}
 		
+		frameGraphic.endDraw();		
+		
 		return tempArray;
 	}
 	
@@ -882,17 +899,32 @@ public void debug() {
 public void transmitAndPlayPhysicalPixels() {
 	
 	// two-dimensional array to store all pixel frames
-	int[][] pixelAnimation = new int[numPixels][numFrames];
+	//int[][] pixelAnimation = new int[numPixels][numFrames];
 	
-	/*
+	int initX = 500;
+	int initY = 500;
+	
 	// load all images
-	for ()
-		displayManager.allFrames.get(i)
+	for (int f = 0; f <  numFrames; f++) {
 		
+		int[] imagePixelArray = displayManager.canvas.allFrames.get(f).returnPixelArray();
+		
+		
+		for (int p = 0; p <  numPixels; p++) {
+			
+			allPixels.get(p).allPixelColors[f] = imagePixelArray[allPixels.get(p).myCenterInPixelArray()];
+			//color pixelColor =	imagePixelArray[allPixels.get(p).myCenterInPixelArray()];
+			noStroke();
+			fill(allPixels.get(p).allPixelColors[f]);
+			rect(initX+(f*20), initY+(p*25), 20, 20);
+		
+		}
+		
+	}
 
 		// load all pixels
-		allPixels.get(i).
-	*/
+		//allPixels.get(i).
+	
 }
 // ------------------------------------------------------------------------
 //
@@ -1233,25 +1265,53 @@ class Packet {
 
 public class PixelController { 
 	
-	int originX;
-	int originY;
-	int[] colorAnimationPerPixel = new int[numFrames];
+	int pixelOriginX = leftColumnX;
+	int pixelOriginY = leftColumnY;
+	
+	int pixelTimelineOriginX = middleColumnX;
+	int pixelTimelineOriginY = middleColumnY;
+	
+	int pixelTimelineWidth = frameWidth/numFrames;
+	int pixelTimelineHeight = 20;
+	
+	int spacer = 1;
 	
 	PGraphics frameColors;
 	
-	PixelController(int _originX, int _originY) {
+	PixelController() {
 		
-		originX = _originX;
-		originY = _originY;
+		app.registerDraw(this);
 	}
 		
 	
-	public void init() {
+	
+	public void init() {		// Load pixels for the first time, but don't display yet
 
 		for (int i = 1; i <= numPixels; i++) {
-			allPixels.addElement(new Pixel(i, 0, 0, originX, originY));			// load pixels for the first time, but don't display yet
+			allPixels.addElement(new Pixel(i, 0, 0, pixelOriginX, pixelOriginY));			
 		}
 	}
+	
+	
+	
+	public void draw() {		// Update all pixels with all frames
+
+		for (int f = 0; f <  numFrames; f++) {
+
+			int[] imagePixelArray = displayManager.canvas.allFrames.get(f).returnPixelArray();
+
+			for (int p = 0; p <  numPixels; p++) {
+
+				allPixels.get(p).allPixelColors[f] = imagePixelArray[ allPixels.get(p).myCenterInPixelArray() ];
+				noStroke();
+				fill( allPixels.get(p).allPixelColors[f] );
+				rect( pixelTimelineOriginX+(f*pixelTimelineWidth), pixelTimelineOriginY + (p * (pixelTimelineHeight + spacer)), pixelTimelineWidth, pixelTimelineHeight );
+
+			}
+		}		
+	}	
+	
+	
 	
 	public void updateaAllPixelColorsWithCurrentFrame(PGraphics _frameGraphic) {
 
@@ -1266,8 +1326,6 @@ public class PixelController {
 		_frameGraphic.endDraw();		
 		
 	}
-
-
 
 	/*
 	void updateaAllPixelColorsWithCurrentFrame(PGraphics _frameGraphic, int _f) {
@@ -1374,8 +1432,8 @@ public class Pixel {
 	     	fill(rimC);
 	     	rect(0,0,w,h); 
      
-	     	//fill(allPixelColors[displayManager.animation.currentFrame-1]);
-	     	fill(glassC);
+	     	fill(allPixelColors[displayManager.animation.currentFrame-1]);
+	     	//fill(glassC);
 			rect(border,border,w-border*2,h-border*2);
 			noStroke();
 
@@ -1547,8 +1605,8 @@ int maxBlobArea = 3000;
 int displayWidth = 320;
 int displayHeight = 240;
 
-int visionX = 900;
-int visionY = 20;
+int visionX = rightColumnX;
+int visionY = rightColumnY;
 
 int menuX = visionX;
 int menuY = 380+visionY;

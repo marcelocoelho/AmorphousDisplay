@@ -39,15 +39,15 @@ public class DisplayManager {
 	
 	int w, h;
 	
-	PVector startPosition;	// where to start drawing things
-	PVector dimension;		// size of drawing and image area. this is not a vector per se.
+	PVector startPosition;		// where to start drawing things
+	PVector dimension;			// size of drawing and image area. this is not a vector per se.
 	
 	DisplayManager(PApplet _root) {
 		
 		root = _root;
 		
-		startPosition = new PVector(appMarginSides,appMarginTop);		// change these to modify interface look
-		dimension = new PVector(320,240);
+		startPosition = new PVector(leftColumnX, leftColumnY);		// change these to modify interface look
+		dimension = new PVector(frameWidth, frameHeight);
 		
 
 		canvas = new Canvas(root, startPosition, dimension);		
@@ -61,7 +61,7 @@ public class DisplayManager {
 	void draw() {
 	
 		canvas.draw();
-		pixelController.updateaAllPixelColorsWithCurrentFrame( canvas.allFrames.get(animation.currentFrame-1).frameGraphic);
+		//pixelController.updateaAllPixelColorsWithCurrentFrame( canvas.allFrames.get(animation.currentFrame-1).frameGraphic);
 			
 	}
 }

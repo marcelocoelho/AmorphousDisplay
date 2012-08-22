@@ -6,25 +6,53 @@
 
 public class PixelController { 
 	
-	int originX;
-	int originY;
-	color[] colorAnimationPerPixel = new color[numFrames];
+	int pixelOriginX = leftColumnX;
+	int pixelOriginY = leftColumnY;
+	
+	int pixelTimelineOriginX = middleColumnX;
+	int pixelTimelineOriginY = middleColumnY;
+	
+	int pixelTimelineWidth = frameWidth/numFrames;
+	int pixelTimelineHeight = 20;
+	
+	int spacer = 1;
 	
 	PGraphics frameColors;
 	
-	PixelController(int _originX, int _originY) {
+	PixelController() {
 		
-		originX = _originX;
-		originY = _originY;
+		app.registerDraw(this);
 	}
 		
 	
-	void init() {
+	
+	void init() {		// Load pixels for the first time, but don't display yet
 
 		for (int i = 1; i <= numPixels; i++) {
-			allPixels.addElement(new Pixel(i, 0, 0, originX, originY));			// load pixels for the first time, but don't display yet
+			allPixels.addElement(new Pixel(i, 0, 0, pixelOriginX, pixelOriginY));			
 		}
 	}
+	
+	
+	
+	void draw() {		// Update all pixels with all frames
+
+		for (int f = 0; f < numFrames; f++) {
+
+			int[] imagePixelArray = displayManager.canvas.allFrames.get(f).returnPixelArray();
+
+			for (int p = 0; p < numPixels; p++) {
+
+				allPixels.get(p).allPixelColors[f] = imagePixelArray[ allPixels.get(p).myCenterInPixelArray() ];
+				noStroke();
+				fill( allPixels.get(p).allPixelColors[f] );
+				rect( pixelTimelineOriginX+(f*pixelTimelineWidth), pixelTimelineOriginY + (p * (pixelTimelineHeight + spacer)), pixelTimelineWidth, pixelTimelineHeight );
+
+			}
+		}		
+	}	
+	
+	
 	
 	void updateaAllPixelColorsWithCurrentFrame(PGraphics _frameGraphic) {
 
@@ -39,8 +67,6 @@ public class PixelController {
 		_frameGraphic.endDraw();		
 		
 	}
-
-
 
 	/*
 	void updateaAllPixelColorsWithCurrentFrame(PGraphics _frameGraphic, int _f) {
@@ -147,8 +173,8 @@ public class Pixel {
 	     	fill(rimC);
 	     	rect(0,0,w,h); 
      
-	     	//fill(allPixelColors[displayManager.animation.currentFrame-1]);
-	     	fill(glassC);
+	     	fill(allPixelColors[displayManager.animation.currentFrame-1]);
+	     	//fill(glassC);
 			rect(border,border,w-border*2,h-border*2);
 			noStroke();
 

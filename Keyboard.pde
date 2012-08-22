@@ -43,15 +43,30 @@ void debug() {
 void transmitAndPlayPhysicalPixels() {
 	
 	// two-dimensional array to store all pixel frames
-	int[][] pixelAnimation = new int[numPixels][numFrames];
+	//int[][] pixelAnimation = new int[numPixels][numFrames];
 	
-	/*
+	int initX = 500;
+	int initY = 500;
+	
 	// load all images
-	for ()
-		displayManager.canvas.allFrames.get(i).returnPixelArray
+	for (int f = 0; f < numFrames; f++) {
 		
+		int[] imagePixelArray = displayManager.canvas.allFrames.get(f).returnPixelArray();
+		
+		
+		for (int p = 0; p < numPixels; p++) {
+			
+			allPixels.get(p).allPixelColors[f] = imagePixelArray[allPixels.get(p).myCenterInPixelArray()];
+			//color pixelColor =	imagePixelArray[allPixels.get(p).myCenterInPixelArray()];
+			noStroke();
+			fill(allPixels.get(p).allPixelColors[f]);
+			rect(initX+(f*20), initY+(p*25), 20, 20);
+		
+		}
+		
+	}
 
 		// load all pixels
-		allPixels.get(i).
-	*/
+		//allPixels.get(i).
+	
 }

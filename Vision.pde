@@ -22,8 +22,8 @@ int maxBlobArea = 3000;
 int displayWidth = 320;
 int displayHeight = 240;
 
-int visionX = 900;
-int visionY = 20;
+int visionX = rightColumnX;
+int visionY = rightColumnY;
 
 int menuX = visionX;
 int menuY = 380+visionY;
