@@ -25,14 +25,17 @@ public class ColorPalette {
 		selectedColor = color(0,0,0,255);
 		
 									     // column row
-		allSwatches.addElement(new Swatch(this, 1, 1, 255, 0, 0));
-		allSwatches.addElement(new Swatch(this, 1, 2, 0, 255, 0));
-		allSwatches.addElement(new Swatch(this, 1, 3, 0, 0, 255));
+		allSwatches.addElement(new Swatch(this,	1,	1,	255,	0, 		0));
+		allSwatches.addElement(new Swatch(this,	1,	2,	0,		255, 	0));
+		allSwatches.addElement(new Swatch(this, 1, 	3,	0,		0,		255));
 		allSwatches.addElement(new Swatch(this, 1, 4, 255, 0, 255));
 				
 		allSwatches.addElement(new Swatch(this, 2, 1, 0, 0, 0));
 		allSwatches.addElement(new Swatch(this, 2, 2, 125, 125, 125));		
 		allSwatches.addElement(new Swatch(this, 2, 3, 255, 255, 255));
+		
+		
+		
 		
 		app.registerDraw(this);
 		
@@ -44,7 +47,7 @@ public class ColorPalette {
 		
 		if(anySelected) {		
 			fill(selectedColor);
-			rect(int(x)+20, int(y), 40, 20);			
+			rect(int(x), int(y), 40, 20);			
 		} else {
 			drawUnselected();
 		}
@@ -53,10 +56,20 @@ public class ColorPalette {
 	
 	void drawUnselected () {
 		fill(0);
-		rect(int(x)+20, int(y), 40, 20);
+		
+		int posX = int(x);
+		int posY = int(y);
+		
+		pushMatrix();
+		translate(posX, posY);
+		
+		rect(0, 0, 40, 20);
+		
 		stroke(color(255, 0, 0));
-		line(int(x)+20, int(y), int(x)+60, int(y)+20);
-		line(int(x)+60, int(y), int(x)+20, int(y)+20);					
+		line(0, 0, 40, 20);
+		line(0, 20, 40, 0);					
+	
+		popMatrix();
 	}
 	
 	
@@ -90,7 +103,7 @@ public class Swatch {
 		b = _b;
 		
 		parent = _this;		
-		x = parent.x+(_column*w);
+		x = parent.x+((_column-1)*w);
 		y = parent.y+10+(_row*h);
 		
 		sColor = color(r, g, b, 255);

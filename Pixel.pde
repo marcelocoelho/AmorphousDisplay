@@ -10,7 +10,7 @@ public class PixelController {
 	int pixelOriginY = leftColumnY;
 	
 	int pixelTimelineOriginX = middleColumnX;
-	int pixelTimelineOriginY = middleColumnY;
+	int pixelTimelineOriginY = middleColumnY + 40;
 	
 	int pixelTimelineWidth = frameWidth/numFrames;
 	int pixelTimelineHeight = 20;
@@ -35,7 +35,7 @@ public class PixelController {
 	
 	
 	
-	void draw() {		// Update all pixels with all frames
+	void draw() {		// Update all pixels with all frames and draw pixel timeline
 
 		for (int f = 0; f < numFrames; f++) {
 
@@ -50,6 +50,15 @@ public class PixelController {
 
 			}
 		}		
+		
+		// draw rectangle to highlight current frame
+		fill(0,0,0,0);
+		stroke(125);
+		rect( 	pixelTimelineOriginX + (displayManager.canvas.currentFrame*pixelTimelineWidth),
+				pixelTimelineOriginY,
+				pixelTimelineWidth,
+				numPixels * (pixelTimelineHeight + spacer));
+		
 	}	
 	
 	

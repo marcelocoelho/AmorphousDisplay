@@ -51,7 +51,7 @@ public class DisplayManager {
 		
 
 		canvas = new Canvas(root, startPosition, dimension);		
-		colorPalette = new ColorPalette(startPosition.x + dimension.x, startPosition.y);
+		colorPalette = new ColorPalette(startPosition.x, startPosition.y + dimension.y + 60);
 		animation	= new Animation(startPosition.x, startPosition.y + dimension.y, dimension.x);
 		
 		app.registerDraw(this);
@@ -139,30 +139,40 @@ public class Animation {
 void initAnimationInterface(float _x, float _y, float _w, float _speed) {
 	
 	controlP5.addSlider("browser")											// slider for animation control
-     		.setPosition(_x,_y+5)
-     		.setSize(int(_w),20)
-     		.setRange(1,numFrames)
+     		.setPosition( middleColumnX, middleColumnY )
+     		.setSize(frameWidth, 20)
+     		.setRange(1, numFrames)
      		.setNumberOfTickMarks(numFrames)
+			.setCaptionLabel(" ");
      		;
-			controlP5.getController("browser").setCaptionLabel("Timeline");
+			//controlP5.getController("browser").setCaptionLabel(" ");
 					
 	controlP5.addButton("playPause",										// play or pause animation	
 			0,
-			int(_x), int(_y)+40,
+			int(_x), int(_y),
 			60, 20
 			);		
 			controlP5.getController("playPause").setCaptionLabel("Play");	
 			
+	controlP5.addSlider("updateScrollSpeed")								// slider for scroll speed
+	   		.setPosition( int(_x) + 320-100, int(_y) )
+    		.setSize(100, 20)
+    		.setRange(1, 10)
+    		.setNumberOfTickMarks(10)
+			.setCaptionLabel(" ");
+     		;
+			//controlP5.getController("updateScrollSpeed").setCaptionLabel(" ");	
 	
+	/*
 	controlP5.addNumberbox("updateScrollSpeed")									//scroll speed
-		     .setPosition(int(_x)+130, int(_y)+40)
+		     .setPosition(int(_x)+130, int(_y))
 		     .setSize(60,20)
 		     .setRange(0.1, 10)
 			 .setMultiplier(1)
 		     .setValue(_speed)
 			 .setCaptionLabel("Scroll Speed")
 		     ;
-
+	*/
 
 	/* ------  color palette related, moved it to a different class later? ---- */
 
@@ -187,7 +197,7 @@ void playPause() {
 }
 
 void updateScrollSpeed() {
-	//displayManager.animation.scrollSpeed = controlP5.getController("updateScrollSpeed").getValue();
+	displayManager.animation.scrollSpeed = controlP5.getController("updateScrollSpeed").getValue() / 5;
 }
 
 void clearAll() {

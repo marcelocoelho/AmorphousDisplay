@@ -29,13 +29,7 @@ public class AmorphousDisplay extends PApplet {
 /*
 
 * TO DO
-*	
-*	- TWO BUGS TO FIX
-*		2- when frames are cleared, pixels retain their color information
-*		3- if pixel positions are loaded after image was loaded, they won't get the new image colors unless I go to their frame
-*		1- when I load an alpha channel (after loading an image) and scroll the animations, pixels will blink colors of last frame
-*			- this stops after I've scrolled through all frames in the animation, meaning the pixels are updated with the appropriate color
-*	- write code to stream all frames to pixels
+*	- move playback slider closer to pixel frames and highlight current frame 
 *	
 *	
 *	FUNCTIONS
@@ -72,7 +66,7 @@ PApplet app = this;
 
 
 
-int numPixels = 10;		// pixels 1-3
+int numPixels = 20;		// pixels 1-3
 int numFrames = 10;		// frames 0-9
 
 Vector<Pixel> allPixels = new Vector<Pixel>();
@@ -193,7 +187,7 @@ public class DisplayManager {
 		
 
 		canvas = new Canvas(root, startPosition, dimension);		
-		colorPalette = new ColorPalette(startPosition.x + dimension.x, startPosition.y);
+		colorPalette = new ColorPalette(startPosition.x, startPosition.y + dimension.y + 60);
 		animation	= new Animation(startPosition.x, startPosition.y + dimension.y, dimension.x);
 		
 		app.registerDraw(this);
@@ -244,27 +238,15 @@ public class Animation {
 			controlP5.getController("playPause").setCaptionLabel("pause");
 			println(currentFrame);
 
+			runningTime = runningTime + scrollSpeed/frameRate;
+			
 			if (PApplet.parseInt(runningTime) >  finalFrame) {
 				currentFrame = 1;
-				runningTime = 1;
+				runningTime = 1;				
 			} else {
-				runningTime = runningTime+scrollSpeed/frameRate;
-				currentFrame = PApplet.parseInt(runningTime);
-				//currentFrame = int(currentFrame+scrollSpeed/frameRate);
+				currentFrame = PApplet.parseInt(runningTime);				
 			}
-		
-		
-			/*
-			if (currentFrame >= finalFrame) {
-				currentFrame = 1;
-				runningTime = 1;
-			} else {
-				runningTime = runningTime+scrollSpeed/frameRate;
-				currentFrame = int(runningTime);
-				//currentFrame = int(currentFrame+scrollSpeed/frameRate);
-			}
-			*/
-		
+			
 		} else {
 			controlP5.getController("playPause").setCaptionLabel("play");
 			currentFrame = (int)controlP5.getController("browser").getValue();
@@ -293,30 +275,40 @@ public class Animation {
 public void initAnimationInterface(float _x, float _y, float _w, float _speed) {
 	
 	controlP5.addSlider("browser")											// slider for animation control
-     		.setPosition(_x,_y+5)
-     		.setSize(PApplet.parseInt(_w),20)
-     		.setRange(1,numFrames)
+     		.setPosition( middleColumnX, middleColumnY )
+     		.setSize(frameWidth, 20)
+     		.setRange(1, numFrames)
      		.setNumberOfTickMarks(numFrames)
+			.setCaptionLabel(" ");
      		;
-			controlP5.getController("browser").setCaptionLabel("Timeline");
+			//controlP5.getController("browser").setCaptionLabel(" ");
 					
 	controlP5.addButton("playPause",										// play or pause animation	
 			0,
-			PApplet.parseInt(_x), PApplet.parseInt(_y)+40,
+			PApplet.parseInt(_x), PApplet.parseInt(_y),
 			60, 20
 			);		
 			controlP5.getController("playPause").setCaptionLabel("Play");	
 			
+	controlP5.addSlider("updateScrollSpeed")								// slider for scroll speed
+	   		.setPosition( PApplet.parseInt(_x) + 320-100, PApplet.parseInt(_y) )
+    		.setSize(100, 20)
+    		.setRange(1, 10)
+    		.setNumberOfTickMarks(10)
+			.setCaptionLabel(" ");
+     		;
+			//controlP5.getController("updateScrollSpeed").setCaptionLabel(" ");	
 	
+	/*
 	controlP5.addNumberbox("updateScrollSpeed")									//scroll speed
-		     .setPosition(PApplet.parseInt(_x)+130, PApplet.parseInt(_y)+40)
+		     .setPosition(int(_x)+130, int(_y))
 		     .setSize(60,20)
-		     .setRange(0.1f, 10)
+		     .setRange(0.1, 10)
 			 .setMultiplier(1)
 		     .setValue(_speed)
 			 .setCaptionLabel("Scroll Speed")
 		     ;
-
+	*/
 
 	/* ------  color palette related, moved it to a different class later? ---- */
 
@@ -341,7 +333,7 @@ public void playPause() {
 }
 
 public void updateScrollSpeed() {
-	//displayManager.animation.scrollSpeed = controlP5.getController("updateScrollSpeed").getValue();
+	displayManager.animation.scrollSpeed = controlP5.getController("updateScrollSpeed").getValue() / 5;
 }
 
 public void clearAll() {
@@ -763,7 +755,7 @@ public class ColorPalette {
 		
 		if(anySelected) {		
 			fill(selectedColor);
-			rect(PApplet.parseInt(x)+20, PApplet.parseInt(y), 40, 20);			
+			rect(PApplet.parseInt(x), PApplet.parseInt(y), 40, 20);			
 		} else {
 			drawUnselected();
 		}
@@ -772,10 +764,20 @@ public class ColorPalette {
 	
 	public void drawUnselected () {
 		fill(0);
-		rect(PApplet.parseInt(x)+20, PApplet.parseInt(y), 40, 20);
+		
+		int posX = PApplet.parseInt(x);
+		int posY = PApplet.parseInt(y);
+		
+		pushMatrix();
+		translate(posX, posY);
+		
+		rect(0, 0, 40, 20);
+		
 		stroke(color(255, 0, 0));
-		line(PApplet.parseInt(x)+20, PApplet.parseInt(y), PApplet.parseInt(x)+60, PApplet.parseInt(y)+20);
-		line(PApplet.parseInt(x)+60, PApplet.parseInt(y), PApplet.parseInt(x)+20, PApplet.parseInt(y)+20);					
+		line(0, 0, 40, 20);
+		line(0, 20, 40, 0);					
+	
+		popMatrix();
 	}
 	
 	
@@ -809,7 +811,7 @@ public class Swatch {
 		b = _b;
 		
 		parent = _this;		
-		x = parent.x+(_column*w);
+		x = parent.x+((_column-1)*w);
 		y = parent.y+10+(_row*h);
 		
 		sColor = color(r, g, b, 255);
@@ -1279,7 +1281,7 @@ public class PixelController {
 	int pixelOriginY = leftColumnY;
 	
 	int pixelTimelineOriginX = middleColumnX;
-	int pixelTimelineOriginY = middleColumnY;
+	int pixelTimelineOriginY = middleColumnY + 40;
 	
 	int pixelTimelineWidth = frameWidth/numFrames;
 	int pixelTimelineHeight = 20;
@@ -1304,7 +1306,7 @@ public class PixelController {
 	
 	
 	
-	public void draw() {		// Update all pixels with all frames
+	public void draw() {		// Update all pixels with all frames and draw pixel timeline
 
 		for (int f = 0; f <  numFrames; f++) {
 
@@ -1319,6 +1321,15 @@ public class PixelController {
 
 			}
 		}		
+		
+		// draw rectangle to highlight current frame
+		fill(0,0,0,0);
+		stroke(125);
+		rect( 	pixelTimelineOriginX + (displayManager.canvas.currentFrame*pixelTimelineWidth),
+				pixelTimelineOriginY,
+				pixelTimelineWidth,
+				numPixels * (pixelTimelineHeight + spacer));
+		
 	}	
 	
 	
