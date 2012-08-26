@@ -140,9 +140,9 @@ void paintPixel() {
 }
 
 void pulseIR() {
-	digitalWrite(EMITIR_PIN, HIGH);
-	delay(map(myRed, 0, 15, 0, 500));
 	digitalWrite(EMITIR_PIN, LOW);
+	delay(map(myRed, 0, 15, 0, 500));
+	digitalWrite(EMITIR_PIN, HIGH);
 	//delay(GREYCODEDELAY);	
 }
 

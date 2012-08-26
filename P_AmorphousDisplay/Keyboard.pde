@@ -25,6 +25,10 @@ public void keyPressed() {
 
 	if(key == 'c') packet.send(0, COLORS, 0, 0, 15);
 	
+	if (key == 'm') packet.send(1, IR, 15, 15, 15);
+
+	if (key == 'n') packet.send(2, IR, 15, 15, 15);
+	
 }
 
 

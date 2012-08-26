@@ -2,7 +2,7 @@
 /*
 
 * TO DO
-*	- figure out PController bug on processing app
+
 *	- wire 4 pixels with leds and see if I can detect them
 *	- write arduino and packet code, so I can send all frames in one shot time
 *		- then send STREAM with FPS defined
@@ -41,7 +41,7 @@ PApplet app = this;
 
 
 
-int numPixels = 20;		// pixels 1-3
+int numPixels = 4;		// pixels 1-3
 int numFrames = 10;		// frames 0-9
 
 Vector<Pixel> allPixels = new Vector<Pixel>();

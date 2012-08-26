@@ -29,7 +29,8 @@ public class P_AmorphousDisplay extends PApplet {
 /*
 
 * TO DO
-*	- figure out PController bug on processing app
+
+*	- wire 4 pixels with leds and see if I can detect them
 *	- write arduino and packet code, so I can send all frames in one shot time
 *		- then send STREAM with FPS defined
 *	
@@ -67,7 +68,7 @@ PApplet app = this;
 
 
 
-int numPixels = 20;		// pixels 1-3
+int numPixels = 4;		// pixels 1-3
 int numFrames = 10;		// frames 0-9
 
 Vector<Pixel> allPixels = new Vector<Pixel>();
@@ -296,7 +297,7 @@ public void initAnimationInterface(float _x, float _y, float _w, float _speed) {
     		.setSize(100, 20)
     		.setRange(1, 10)
     		.setNumberOfTickMarks(10)
-			.setCaptionLabel(" ");
+			.setCaptionLabel(" ")
      		;
 			//controlP5.getController("updateScrollSpeed").setCaptionLabel(" ");	
 	
@@ -334,7 +335,8 @@ public void playPause() {
 }
 
 public void updateScrollSpeed() {
-	displayManager.animation.scrollSpeed = controlP5.getController("updateScrollSpeed").getValue() / 5;
+	// throwing an error, not sure why. so commented it.
+	//displayManager.animation.scrollSpeed = controlP5.getController("updateScrollSpeed").getValue() / 5;
 }
 
 public void clearAll() {
@@ -896,6 +898,10 @@ public void keyPressed() {
 	if(key == 'c') packet.send(0, COLORS, 0, 15, 0);
 
 	if(key == 'c') packet.send(0, COLORS, 0, 0, 15);
+	
+	if (key == 'm') packet.send(1, IR, 15, 0, 0);
+
+	if (key == 'n') packet.send(2, IR, 15, 0, 0);
 	
 }
 
