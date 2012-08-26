@@ -23,14 +23,15 @@ import java.util.*;
 import java.util.zip.*; 
 import java.util.regex.*; 
 
-public class AmorphousDisplay extends PApplet {
+public class P_AmorphousDisplay extends PApplet {
 
 
 /*
 
 * TO DO
-*	- move playback slider closer to pixel frames and highlight current frame 
-*	
+*	- figure out PController bug on processing app
+*	- write arduino and packet code, so I can send all frames in one shot time
+*		- then send STREAM with FPS defined
 *	
 *	FUNCTIONS
 *	- drawing 
@@ -888,6 +889,14 @@ public void keyPressed() {
 
 	if(key == 'd') debug();
 	
+	if(key == 'z') packet.send(0, COLORS, 15, 15, 15);
+
+	if(key == 'x') packet.send(0, COLORS, 15, 0, 0);
+
+	if(key == 'c') packet.send(0, COLORS, 0, 15, 0);
+
+	if(key == 'c') packet.send(0, COLORS, 0, 0, 15);
+	
 }
 
 
@@ -900,6 +909,14 @@ public void loadPixelsRandomly() {
 		allPixels.get(i).h = 20;	
 		allPixels.get(i).scanned = true; // this displays the pixels	
 	}	
+}
+
+
+public void testSendIR() {
+	
+	
+	
+	
 }
 
 
@@ -1887,6 +1904,6 @@ public void labelPix() {
 
 
   static public void main(String args[]) {
-    PApplet.main(new String[] { "--bgcolor=#FFFFFF", "AmorphousDisplay" });
+    PApplet.main(new String[] { "--bgcolor=#FFFFFF", "P_AmorphousDisplay" });
   }
 }

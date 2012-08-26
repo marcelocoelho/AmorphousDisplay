@@ -2,8 +2,10 @@
 /*
 
 * TO DO
-*	- move playback slider closer to pixel frames and highlight current frame 
-*	
+*	- figure out PController bug on processing app
+*	- wire 4 pixels with leds and see if I can detect them
+*	- write arduino and packet code, so I can send all frames in one shot time
+*		- then send STREAM with FPS defined
 *	
 *	FUNCTIONS
 *	- drawing 
