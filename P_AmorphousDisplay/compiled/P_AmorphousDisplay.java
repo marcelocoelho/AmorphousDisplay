@@ -891,17 +891,23 @@ public void keyPressed() {
 
 	if(key == 'd') debug();
 	
-	if(key == 'z') packet.send(0, COLORS, 15, 15, 15);
-
-	if(key == 'x') packet.send(0, COLORS, 15, 0, 0);
-
-	if(key == 'c') packet.send(0, COLORS, 0, 15, 0);
-
-	if(key == 'c') packet.send(0, COLORS, 0, 0, 15);
+	if(key == 'z') packet.send(0, COLOR, 15, 15, 15);
+	if(key == 'x') packet.send(0, COLOR, 15, 0, 0);
+	if(key == 'c') packet.send(0, COLOR, 0, 15, 0);
+	if(key == 'v') packet.send(0, COLOR, 0, 0, 15);
 	
-	if (key == 'm') packet.send(1, IR, 15, 0, 0);
+	if (key == 'm') packet.send(1, IR, 15, 15, 15);
+	if (key == 'n') packet.send(2, IR, 15, 15, 15);
+	
+	if (key == 'f') packet.sendNew(0, STOREFRAME, 15, 0, 15, 0);
+	if (key == 'g') packet.sendNew(0, STOREFRAME, 0, 15, 15, 1);
+	if (key == 'h') packet.sendNew(0, GOTOFRAME, 0, 0, 0, 0);
+	if (key == 'j') packet.sendNew(0, GOTOFRAME, 0, 0, 0, 1);
+	if (key == 'k') packet.sendNew(0, GOTOFRAME, 0, 0, 0, 2); 	
+	
 
-	if (key == 'n') packet.send(2, IR, 15, 0, 0);
+	
+	
 	
 }
 
@@ -1210,13 +1216,25 @@ public void saveMovie() {
 // This class handles all the data preparation and sending it to Arduino that then retransmits it over IR
 
 
+/*
 // processing doesn't support enums
 public static final int COLORS = 0;
 public static final int IR = 1;
 public static final int STREAM = 2;
 public static final int SHOW = 3;
 public static final int GREYCODE = 4;
+*/
 
+
+
+
+
+public static final byte COLOR 	=	 	0xA;
+public static final byte STOREFRAME 	= 	0xB;
+public static final byte GOTOFRAME 	= 	0xC;
+public static final byte PLAYALLFRAMES = 0xD;
+public static final byte SHOWFRAME 	= 	0xE;
+public static final byte IR 	= 			0xF;
 
 class Packet {
   
@@ -1231,13 +1249,14 @@ class Packet {
    }
    
    
+/*
   // this choses what nibble to send when I call a certain command through packet.send() 
-  public byte chooseFunction(int _function) {
+  byte chooseFunction(int _function) {
     
     byte val = 0x00;
     
     switch(_function) {
-     case COLORS:
+     case COLOR:
        val = 0x0A;
        break;
      case IR: 
@@ -1258,7 +1277,7 @@ class Packet {
     
     return val;
   }
-   
+*/
 
   public byte boundColor(int _color) {
     if (_color >  15) _color = 15;
@@ -1275,7 +1294,8 @@ class Packet {
 	waitingConfirmation = false;
   }
 
-  public void send(int _pixelId, int _function, int _red, int _green, int _blue) {
+
+  public void sendNew(int _pixelId, byte _function, int _value1, int _value2, int _value3, int _value4) {
     
 	while(waitingConfirmation) {
 		// waiting for confirmation
@@ -1286,7 +1306,27 @@ class Packet {
 	waitingConfirmation = true;
     
 	// this sends 32 bits, but 8 bits at a time
-	myPort.write(start | chooseFunction(_function));        	// start nibble and function/command   
+	myPort.write(start | _function);        	// start nibble and function/command   
+    myPort.write( boundPixelId(_pixelId) );						// pixel ID 
+    myPort.write(boundColor(_value1) << 4 | boundColor(_value2));	// color red and green
+    myPort.write(boundColor(_value3) << 4 | _value4);			// color blue and checksum (which we are not using now)
+    
+  }
+
+
+
+  public void send(int _pixelId, byte _function, int _red, int _green, int _blue) {
+    
+	while(waitingConfirmation) {
+		// waiting for confirmation
+		// this prevents processing from sending more data, before arduino is done
+	}
+	
+	// now that I'm ready to send more data, go do it
+	waitingConfirmation = true;
+    
+	// this sends 32 bits, but 8 bits at a time
+	myPort.write(start | _function);        	// start nibble and function/command   
     myPort.write( boundPixelId(_pixelId) );						// pixel ID 
     myPort.write(boundColor(_red) << 4 | boundColor(_green));	// color red and green
     myPort.write(boundColor(_blue) << 4 | checksum);			// color blue and checksum (which we are not using now)

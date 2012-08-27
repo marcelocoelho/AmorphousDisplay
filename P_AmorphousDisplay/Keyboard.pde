@@ -17,17 +17,31 @@ public void keyPressed() {
 
 	if(key == 'd') debug();
 	
-	if(key == 'z') packet.send(0, COLORS, 15, 15, 15);
-
-	if(key == 'x') packet.send(0, COLORS, 15, 0, 0);
-
-	if(key == 'c') packet.send(0, COLORS, 0, 15, 0);
-
-	if(key == 'c') packet.send(0, COLORS, 0, 0, 15);
+	if(key == 'z') packet.send(0, COLOR, 15, 15, 15);
+	if(key == 'x') packet.send(0, COLOR, 15, 0, 0);
+	if(key == 'c') packet.send(0, COLOR, 0, 15, 0);
+	if(key == 'v') packet.send(0, COLOR, 0, 0, 15);
 	
 	if (key == 'm') packet.send(1, IR, 15, 15, 15);
-
 	if (key == 'n') packet.send(2, IR, 15, 15, 15);
+	
+	if (key == 'f') packet.sendNew(0, STOREFRAME, 15, 0, 15, 0);
+	if (key == 'g') packet.sendNew(0, STOREFRAME, 0, 15, 15, 1);
+	if (key == 'h') packet.sendNew(0, GOTOFRAME, 0, 0, 0, 0);
+	if (key == 'j') packet.sendNew(0, GOTOFRAME, 0, 0, 0, 1);
+	if (key == 'k') packet.sendNew(0, GOTOFRAME, 0, 0, 0, 2); 	
+	
+	/*
+	if (key =='q') {}
+		// send all frames of one pixel for all pixels
+    	for (int i = 0; i < numFrames; i++) {
+			packet.sendNew(0, STOREFRAME, 15, 0, 15, 0);
+		}
+	}
+	*/
+
+	
+	
 	
 }
 

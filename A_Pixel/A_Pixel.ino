@@ -11,29 +11,32 @@
 
 #define RECV_PIN 	2
 #define EMITIR_PIN 	6
-#define RED_PIN		9
-#define	GREEN_PIN	10
-#define	BLUE_PIN	11
+#define LED_RED		9
+#define	LED_GREEN	10
+#define	LED_BLUE	11
 
 
-#define PIXELID		0x04
+#define PIXELID		0x01
 
 #define STARTNIBBLE	0xA
-#define COLORS		0xA		
-#define	IR			0xB		
-#define	STREAM		0xC		
-#define	SHOW		0xD
-#define	GREYCODE	0xE		
-#define GREYCODEDELAY 500
+
+
+#define COLOR			0xA	
+#define STOREFRAME		0xB
+#define	GOTOFRAME		0xC
+#define PLAYALLFRAMES	0xD
+#define SHOWFRAME		0xE
+#define IR				0xF
+	
 
 
 //typedef for 32 bit message packets
 typedef struct {
 
-	unsigned int checksum : 4;
-	unsigned int blue : 4;
-	unsigned int green : 4;
-	unsigned int red : 4;
+	unsigned int packet4 : 4;
+	unsigned int packet3 : 4;
+	unsigned int packet2 : 4;
+	unsigned int packet1 : 4;
 	unsigned int pixelId : 8;
 	unsigned int function : 4;
 	unsigned int start : 4;
@@ -41,9 +44,11 @@ typedef struct {
 } __attribute__ ((__packed__)) packet;
 
 
-int myRed = 0;
-int myGreen = 0;
-int myBlue = 0;
+#define MAX_NUM_FRAMES 10 				// hard coding the max number of frames a pixel can play, so I don't have to deal with dynamic arrays
+#define NUM_VALUES		3
+int myFrames[MAX_NUM_FRAMES][NUM_VALUES];
+int currentFrame;
+
 
 
 packet message;
@@ -58,12 +63,15 @@ decode_results results;
 void setup()
 {
   Serial.begin(115200);
-  irrecv.enableIRIn(); // Start the receiver
+  irrecv.enableIRIn(); 				// Start the IR receiver
 
-  pinMode(EMITIR_PIN, OUTPUT);
-  digitalWrite(EMITIR_PIN, HIGH);      // HIGH to turn off, LOW to turn on
+  pinMode(EMITIR_PIN, OUTPUT);		// Turn off IR emitter
+  digitalWrite(EMITIR_PIN, HIGH);	// HIGH to turn off, LOW to turn on
 
   Serial.println("awake now");
+
+  initFrames();
+
 }
 
 
@@ -91,27 +99,30 @@ void parseRcvdMessage(long rcvdMessage) {
 		
 		switch(message.function) {
 		
-			case COLORS:
-				//Serial.println("got color");
-				assignColors();
+			case COLOR:			// Display color as soon as it is received
 				paintPixel();
 				break;
-			case IR:
-				//Serial.println("got IR");
+				
+			case STOREFRAME:	// Store frame without displaying it
+				storeFrame();
+				break;
+				
+			case GOTOFRAME:		// Play specific frame
+				goToFrame();
+				break;
+				
+			case PLAYALLFRAMES:	// Play all frames with timing information provided
+				playAllFrames();
+				break;
+				
+			case SHOWFRAME:		// Show frame for debugging purposes
+				showFrame();
+				break;
+				
+			case IR:				// Pulse IR 
 				pulseIR();
 				break;	
-			case STREAM:
-				//Serial.println("got stream");
-				assignColors();				
-				break;	
-			case SHOW:
-				//Serial.println("got show");
-				paintPixel();			
-				break;
-			case GREYCODE:
-				//Serial.println("got greycode");
-				greyCodeSequence();			
-				break;										
+												
 			default:
 				break;
 		}
@@ -122,30 +133,66 @@ void parseRcvdMessage(long rcvdMessage) {
 }
 
 
+// Initialize frame array with 0
+void initFrames() {	
+	
+	for (int maxFrames = 0; maxFrames < MAX_NUM_FRAMES; maxFrames++) {
 
-
-void assignColors() {
-	myRed = message.red;
-	myGreen = message.green;
-	myBlue = message.blue;
+		for (int maxValues = 0; maxValues < NUM_VALUES; maxValues++) {
+			myFrames[maxFrames][maxValues] = 0;
+		}
+	}
 }
 
 
 
 
 void paintPixel() {
-	analogWrite(RED_PIN,255-map(myRed, 0, 15, 0, 255));
-	analogWrite(GREEN_PIN,255-map(myGreen, 0, 15, 0, 255));
-	analogWrite(BLUE_PIN,255-map(myBlue, 0, 15, 0, 255));	
+	analogWrite(LED_RED,255-map(message.packet1, 0, 15, 0, 255));
+	analogWrite(LED_GREEN,255-map(message.packet2, 0, 15, 0, 255));
+	analogWrite(LED_BLUE,255-map(message.packet3, 0, 15, 0, 255));	
 }
+
+
+void storeFrame() {
+	myFrames[message.packet4][0] = message.packet1;
+	myFrames[message.packet4][1] = message.packet2;
+	myFrames[message.packet4][2] = message.packet3;	
+}
+
+
+void goToFrame() {
+	
+	int tempRed = 255 - map( myFrames[message.packet4][0], 0, 15, 0, 255 );
+	int tempGreen = 255 - map( myFrames[message.packet4][1], 0, 15, 0, 255 );
+	int tempBlue = 255 - map( myFrames[message.packet4][2], 0, 15, 0, 255 ); 
+		
+	analogWrite(LED_RED, tempRed);
+	analogWrite(LED_GREEN, tempGreen);
+	analogWrite(LED_BLUE, tempBlue);	
+}
+
+
+void playAllFrames() {
+	
+	
+}
+
+void showFrame() {
+	
+	
+}
+
 
 void pulseIR() {
 	digitalWrite(EMITIR_PIN, LOW);
-	delay(map(myRed, 0, 15, 0, 500));
+	delay(map(message.packet1, 0, 15, 0, 500));
 	digitalWrite(EMITIR_PIN, HIGH);
 	//delay(GREYCODEDELAY);	
 }
 
+
+/*
 
 void toggleIRBeacon(boolean _value) {
   if (_value == true) {
@@ -169,7 +216,7 @@ void greyCodeSequence() {
 	}
 }
 
-
+*/
 
 
 
