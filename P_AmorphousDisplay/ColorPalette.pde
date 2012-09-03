@@ -25,14 +25,14 @@ public class ColorPalette {
 		selectedColor = color(0,0,0,255);
 		
 									     // column row
-		allSwatches.addElement(new Swatch(this,	1,	1,	255,	0, 		0));
-		allSwatches.addElement(new Swatch(this,	1,	2,	0,		255, 	0));
-		allSwatches.addElement(new Swatch(this, 1, 	3,	0,		0,		255));
-		allSwatches.addElement(new Swatch(this, 1, 4, 255, 0, 255));
+		allSwatches.addElement(new Swatch(this,	1,	1,	255, 0, 0));
+		allSwatches.addElement(new Swatch(this,	1,	2,	0, 255, 0));
+		allSwatches.addElement(new Swatch(this, 1, 	3,	0, 0, 255));
+		allSwatches.addElement(new Swatch(this, 1, 4, 	255, 0, 255));
 				
-		allSwatches.addElement(new Swatch(this, 2, 1, 0, 0, 0));
-		allSwatches.addElement(new Swatch(this, 2, 2, 125, 125, 125));		
-		allSwatches.addElement(new Swatch(this, 2, 3, 255, 255, 255));
+		allSwatches.addElement(new Swatch(this, 2, 1, 	0, 0, 0));
+		allSwatches.addElement(new Swatch(this, 2, 2, 	125, 125, 125));		
+		allSwatches.addElement(new Swatch(this, 2, 3, 	255, 255, 255));
 		
 		
 		

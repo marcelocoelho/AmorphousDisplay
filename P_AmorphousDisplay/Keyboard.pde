@@ -11,34 +11,50 @@
 
 public void keyPressed() {
 
-	if(key == 'h') loadPixelsRandomly();
+	if(key == 'r') loadPixelsRandomly();
 	
 	if(key == 's') transmitAndPlayPhysicalPixels();
 
 	if(key == 'd') debug();
 	
-	if(key == 'z') packet.send(0, COLOR, 15, 15, 15);
-	if(key == 'x') packet.send(0, COLOR, 15, 0, 0);
-	if(key == 'c') packet.send(0, COLOR, 0, 15, 0);
-	if(key == 'v') packet.send(0, COLOR, 0, 0, 15);
+	if(key == 'z') packet.sendNew(0, COLOR, 255, 255, 255, 0);
+	if(key == 'x') packet.sendNew(0, COLOR, 255, 0, 0, 0);
+	if(key == 'c') packet.sendNew(0, COLOR, 0, 255, 0, 0);
+	if(key == 'v') packet.sendNew(0, COLOR, 0, 0, 255, 0);
 	
-	if (key == 'm') packet.send(1, IR, 15, 15, 15);
-	if (key == 'n') packet.send(2, IR, 15, 15, 15);
+	if (key == 'm') packet.sendNew(1, IR, 255, 255, 255, 0);
+	if (key == 'n') packet.sendNew(2, IR, 255, 255, 255, 0);
 	
-	if (key == 'f') packet.sendNew(0, STOREFRAME, 15, 0, 15, 0);
-	if (key == 'g') packet.sendNew(0, STOREFRAME, 0, 15, 15, 1);
-	if (key == 'h') packet.sendNew(0, GOTOFRAME, 0, 0, 0, 0);
-	if (key == 'j') packet.sendNew(0, GOTOFRAME, 0, 0, 0, 1);
-	if (key == 'k') packet.sendNew(0, GOTOFRAME, 0, 0, 0, 2); 	
+	if (key == 'f') packet.sendNew(0, STOREFRAME, 255, 0, 255, 0);
+	if (key == 'g') packet.sendNew(0, STOREFRAME, 0, 255, 255, 1);
+
+	if (key == '1') packet.sendNew(0, GOTOFRAME, 0, 0, 0, 0);
+	if (key == '2') packet.sendNew(0, GOTOFRAME, 0, 0, 0, 1);
+	if (key == '3') packet.sendNew(0, GOTOFRAME, 0, 0, 0, 2); 	
+	if (key == '4') packet.sendNew(0, GOTOFRAME, 0, 0, 0, 3);
+	if (key == '5') packet.sendNew(0, GOTOFRAME, 0, 0, 0, 4);
+	if (key == '6') packet.sendNew(0, GOTOFRAME, 0, 0, 0, 5);	
+	if (key == '7') packet.sendNew(0, GOTOFRAME, 0, 0, 0, 6); 	
+	if (key == '8') packet.sendNew(0, GOTOFRAME, 0, 0, 0, 7);
+	if (key == '9') packet.sendNew(0, GOTOFRAME, 0, 0, 0, 8);
+	if (key == '0') packet.sendNew(0, GOTOFRAME, 0, 0, 0, 9);	
 	
-	/*
-	if (key =='q') {}
-		// send all frames of one pixel for all pixels
-    	for (int i = 0; i < numFrames; i++) {
-			packet.sendNew(0, STOREFRAME, 15, 0, 15, 0);
+	
+	if (key =='q') {
+		// send all frames of one pixel to all pixels
+    	for (int f = 0; f < numFrames; f++) {
+			print(f);
+			print("    ");
+			print(packet.remapColor(int(red(allPixels.get(0).allPixelColors[f]))));			// get(0) =  pixelId 1
+			print("  ");
+			print(packet.remapColor(int(green(allPixels.get(0).allPixelColors[f]))));	
+			print("  ");
+			println(packet.remapColor(int(blue(allPixels.get(0).allPixelColors[f]))));						
+			
+			//packet.sendNew(0, STOREFRAME, int(red(allPixels.get(0).allPixelColors[f])), int(red(allPixels.get(0).allPixelColors[f])), int(red(allPixels.get(0).allPixelColors[f])), f);
 		}
 	}
-	*/
+	
 
 	
 	

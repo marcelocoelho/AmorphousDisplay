@@ -124,7 +124,7 @@ public void draw() {
 	
 	background(125);
 	
-	loadCameraViews();
+	//loadCameraViews();
 	
 }
 
@@ -739,14 +739,14 @@ public class ColorPalette {
 		selectedColor = color(0,0,0,255);
 		
 									     // column row
-		allSwatches.addElement(new Swatch(this,	1,	1,	255,	0, 		0));
-		allSwatches.addElement(new Swatch(this,	1,	2,	0,		255, 	0));
-		allSwatches.addElement(new Swatch(this, 1, 	3,	0,		0,		255));
-		allSwatches.addElement(new Swatch(this, 1, 4, 255, 0, 255));
+		allSwatches.addElement(new Swatch(this,	1,	1,	255, 0, 0));
+		allSwatches.addElement(new Swatch(this,	1,	2,	0, 255, 0));
+		allSwatches.addElement(new Swatch(this, 1, 	3,	0, 0, 255));
+		allSwatches.addElement(new Swatch(this, 1, 4, 	255, 0, 255));
 				
-		allSwatches.addElement(new Swatch(this, 2, 1, 0, 0, 0));
-		allSwatches.addElement(new Swatch(this, 2, 2, 125, 125, 125));		
-		allSwatches.addElement(new Swatch(this, 2, 3, 255, 255, 255));
+		allSwatches.addElement(new Swatch(this, 2, 1, 	0, 0, 0));
+		allSwatches.addElement(new Swatch(this, 2, 2, 	125, 125, 125));		
+		allSwatches.addElement(new Swatch(this, 2, 3, 	255, 255, 255));
 		
 		
 		
@@ -885,25 +885,49 @@ public class Swatch {
 
 public void keyPressed() {
 
-	if(key == 'h') loadPixelsRandomly();
+	if(key == 'r') loadPixelsRandomly();
 	
 	if(key == 's') transmitAndPlayPhysicalPixels();
 
 	if(key == 'd') debug();
 	
-	if(key == 'z') packet.send(0, COLOR, 15, 15, 15);
-	if(key == 'x') packet.send(0, COLOR, 15, 0, 0);
-	if(key == 'c') packet.send(0, COLOR, 0, 15, 0);
-	if(key == 'v') packet.send(0, COLOR, 0, 0, 15);
+	if(key == 'z') packet.sendNew(0, COLOR, 255, 255, 255, 0);
+	if(key == 'x') packet.sendNew(0, COLOR, 255, 0, 0, 0);
+	if(key == 'c') packet.sendNew(0, COLOR, 0, 255, 0, 0);
+	if(key == 'v') packet.sendNew(0, COLOR, 0, 0, 255, 0);
 	
-	if (key == 'm') packet.send(1, IR, 15, 15, 15);
-	if (key == 'n') packet.send(2, IR, 15, 15, 15);
+	if (key == 'm') packet.sendNew(1, IR, 255, 255, 255, 0);
+	if (key == 'n') packet.sendNew(2, IR, 255, 255, 255, 0);
 	
-	if (key == 'f') packet.sendNew(0, STOREFRAME, 15, 0, 15, 0);
-	if (key == 'g') packet.sendNew(0, STOREFRAME, 0, 15, 15, 1);
-	if (key == 'h') packet.sendNew(0, GOTOFRAME, 0, 0, 0, 0);
-	if (key == 'j') packet.sendNew(0, GOTOFRAME, 0, 0, 0, 1);
-	if (key == 'k') packet.sendNew(0, GOTOFRAME, 0, 0, 0, 2); 	
+	if (key == 'f') packet.sendNew(0, STOREFRAME, 255, 0, 255, 0);
+	if (key == 'g') packet.sendNew(0, STOREFRAME, 0, 255, 255, 1);
+
+	if (key == '1') packet.sendNew(0, GOTOFRAME, 0, 0, 0, 0);
+	if (key == '2') packet.sendNew(0, GOTOFRAME, 0, 0, 0, 1);
+	if (key == '3') packet.sendNew(0, GOTOFRAME, 0, 0, 0, 2); 	
+	if (key == '4') packet.sendNew(0, GOTOFRAME, 0, 0, 0, 3);
+	if (key == '5') packet.sendNew(0, GOTOFRAME, 0, 0, 0, 4);
+	if (key == '6') packet.sendNew(0, GOTOFRAME, 0, 0, 0, 5);	
+	if (key == '7') packet.sendNew(0, GOTOFRAME, 0, 0, 0, 6); 	
+	if (key == '8') packet.sendNew(0, GOTOFRAME, 0, 0, 0, 7);
+	if (key == '9') packet.sendNew(0, GOTOFRAME, 0, 0, 0, 8);
+	if (key == '0') packet.sendNew(0, GOTOFRAME, 0, 0, 0, 9);	
+	
+	
+	if (key =='q') {
+		// send all frames of one pixel to all pixels
+    	for (int f = 0; f <  numFrames; f++) {
+			print(f);
+			print("    ");
+			print(packet.remapColor(PApplet.parseInt(red(allPixels.get(0).allPixelColors[f]))));			// get(0) =  pixelId 1
+			print("  ");
+			print(packet.remapColor(PApplet.parseInt(green(allPixels.get(0).allPixelColors[f]))));	
+			print("  ");
+			println(packet.remapColor(PApplet.parseInt(blue(allPixels.get(0).allPixelColors[f]))));						
+			
+			//packet.sendNew(0, STOREFRAME, int(red(allPixels.get(0).allPixelColors[f])), int(red(allPixels.get(0).allPixelColors[f])), int(red(allPixels.get(0).allPixelColors[f])), f);
+		}
+	}
 	
 
 	
@@ -1249,40 +1273,21 @@ class Packet {
    }
    
    
-/*
-  // this choses what nibble to send when I call a certain command through packet.send() 
-  byte chooseFunction(int _function) {
-    
-    byte val = 0x00;
-    
-    switch(_function) {
-     case COLOR:
-       val = 0x0A;
-       break;
-     case IR: 
-       val = 0x0B;
-       break;
-     case STREAM: 
-       val = 0x0C;
-       break;
-     case SHOW: 
-       val = 0x0D;
-       break;
-     case GREYCODE: 
-       val = 0x0E;
-       break;
-     default: 
-      break;
-    }
-    
-    return val;
-  }
-*/
 
   public byte boundColor(int _color) {
     if (_color >  15) _color = 15;
     return (byte)_color;
   }
+
+ public byte remapColor(int _color) {
+	
+	byte colorByte;
+	
+	_color = (int)map(_color, 0, 255, 0, 15);
+	colorByte = (byte)_color;
+	
+	return colorByte;
+}
 
 
   public byte boundPixelId(int _pixelId) {
@@ -1308,14 +1313,14 @@ class Packet {
 	// this sends 32 bits, but 8 bits at a time
 	myPort.write(start | _function);        	// start nibble and function/command   
     myPort.write( boundPixelId(_pixelId) );						// pixel ID 
-    myPort.write(boundColor(_value1) << 4 | boundColor(_value2));	// color red and green
-    myPort.write(boundColor(_value3) << 4 | _value4);			// color blue and checksum (which we are not using now)
+    myPort.write(remapColor(_value1) << 4 | remapColor(_value2));	// color red and green
+    myPort.write(remapColor(_value3) << 4 | _value4);			// color blue and checksum (which we are not using now)
     
   }
 
 
 
-  public void send(int _pixelId, byte _function, int _red, int _green, int _blue) {
+  public void sendOld(int _pixelId, byte _function, int _red, int _green, int _blue) {
     
 	while(waitingConfirmation) {
 		// waiting for confirmation
@@ -1789,7 +1794,7 @@ public void matchPix() {
 			allPixels.get(i).scanned = true;
 			
 			// send IR			
-			packet.send( i+1, IR, 119, 0, 0 );			// ir=63; delay=240;
+			packet.sendNew( i+1, IR, 119, 0, 0, 0 );			// ir=63; delay=240;
 
 			// wait for pixels to display IR
 			delay(220);

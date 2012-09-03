@@ -1,9 +1,9 @@
 
 
 import hypermedia.video.*;
-import processing.video.*;
+//import processing.video.*;
 
-import java.awt.*;
+//import java.awt.*;
 
 
 //ControlP5 vCP5;
@@ -119,7 +119,7 @@ void matchPix() {
 			allPixels.get(i).scanned = true;
 			
 			// send IR			
-			packet.send( i+1, IR, 119, 0, 0 );			// ir=63; delay=240;
+			packet.sendNew( i+1, IR, 119, 0, 0, 0 );			// ir=63; delay=240;
 
 			// wait for pixels to display IR
 			delay(220);

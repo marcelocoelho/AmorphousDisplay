@@ -37,40 +37,21 @@ class Packet {
    }
    
    
-/*
-  // this choses what nibble to send when I call a certain command through packet.send() 
-  byte chooseFunction(int _function) {
-    
-    byte val = 0x00;
-    
-    switch(_function) {
-     case COLOR:
-       val = 0x0A;
-       break;
-     case IR: 
-       val = 0x0B;
-       break;
-     case STREAM: 
-       val = 0x0C;
-       break;
-     case SHOW: 
-       val = 0x0D;
-       break;
-     case GREYCODE: 
-       val = 0x0E;
-       break;
-     default: 
-      break;
-    }
-    
-    return val;
-  }
-*/
 
   byte boundColor(int _color) {
     if (_color > 15) _color = 15;
     return (byte)_color;
   }
+
+ byte remapColor(int _color) {
+	
+	byte colorByte;
+	
+	_color = (int)map(_color, 0, 255, 0, 15);
+	colorByte = (byte)_color;
+	
+	return colorByte;
+}
 
 
   byte boundPixelId(int _pixelId) {
@@ -96,14 +77,14 @@ class Packet {
 	// this sends 32 bits, but 8 bits at a time
 	myPort.write(start | _function);        	// start nibble and function/command   
     myPort.write( boundPixelId(_pixelId) );						// pixel ID 
-    myPort.write(boundColor(_value1) << 4 | boundColor(_value2));	// color red and green
-    myPort.write(boundColor(_value3) << 4 | _value4);			// color blue and checksum (which we are not using now)
+    myPort.write(remapColor(_value1) << 4 | remapColor(_value2));	// color red and green
+    myPort.write(remapColor(_value3) << 4 | _value4);			// color blue and checksum (which we are not using now)
     
   }
 
 
 
-  void send(int _pixelId, byte _function, int _red, int _green, int _blue) {
+  void sendOld(int _pixelId, byte _function, int _red, int _green, int _blue) {
     
 	while(waitingConfirmation) {
 		// waiting for confirmation

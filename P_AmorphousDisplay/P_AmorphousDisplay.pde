@@ -75,7 +75,7 @@ int rightColumnY = leftColumnY;
 void setup() {
 	
 	size(1300,800);
-	frameRate(60);
+	frameRate(10);
 		
 	controlP5 = new ControlP5(this);
 	

@@ -3,46 +3,44 @@
 <plist version="1.0">
 <dict>
 	<key>currentDocument</key>
-	<string>Packet.pde</string>
+	<string>P_AmorphousDisplay.pde</string>
 	<key>documents</key>
 	<array>
 		<dict>
 			<key>filename</key>
 			<string>ColorPalette.pde</string>
 			<key>lastUsed</key>
-			<date>2012-08-26T02:35:22Z</date>
+			<date>2012-08-29T22:34:03Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>Canvas.pde</string>
 			<key>lastUsed</key>
-			<date>2012-08-26T19:45:38Z</date>
+			<date>2012-08-31T02:05:05Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>Vision.pde</string>
 			<key>lastUsed</key>
-			<date>2012-08-22T22:37:15Z</date>
+			<date>2012-09-03T02:39:15Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>LoadImage.pde</string>
 			<key>lastUsed</key>
-			<date>2012-08-26T19:56:09Z</date>
+			<date>2012-08-31T02:03:39Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>Pixel.pde</string>
 			<key>lastUsed</key>
-			<date>2012-08-23T00:30:21Z</date>
+			<date>2012-08-30T01:04:26Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>Packet.pde</string>
 			<key>lastUsed</key>
-			<date>2012-08-26T23:44:57Z</date>
-			<key>selected</key>
-			<true/>
+			<date>2012-08-31T01:56:31Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -54,13 +52,15 @@
 			<key>filename</key>
 			<string>Keyboard.pde</string>
 			<key>lastUsed</key>
-			<date>2012-08-26T23:44:57Z</date>
+			<date>2012-09-03T02:32:58Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>P_AmorphousDisplay.pde</string>
 			<key>lastUsed</key>
-			<date>2012-08-26T19:56:08Z</date>
+			<date>2012-09-03T02:39:15Z</date>
+			<key>selected</key>
+			<true/>
 		</dict>
 	</array>
 	<key>fileHierarchyDrawerWidth</key>
@@ -72,42 +72,42 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>53</integer>
+				<integer>37</integer>
 				<key>line</key>
-				<integer>199</integer>
+				<integer>356</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>0</integer>
+			<integer>254</integer>
 		</dict>
 		<key>ColorPalette.pde</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>63</integer>
+				<integer>62</integer>
 				<key>line</key>
-				<integer>29</integer>
+				<integer>34</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>0</integer>
+			<integer>15</integer>
 		</dict>
 		<key>Keyboard.pde</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>46</integer>
+				<integer>17</integer>
 				<key>line</key>
-				<integer>29</integer>
+				<integer>46</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>0</integer>
+			<integer>22</integer>
 		</dict>
 		<key>LoadImage.pde</key>
 		<dict>
@@ -123,7 +123,7 @@
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>194</integer>
+			<integer>190</integer>
 			<key>selectFrom</key>
 			<dict>
 				<key>column</key>
@@ -144,43 +144,43 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>17</integer>
+				<integer>16</integer>
 				<key>line</key>
-				<integer>43</integer>
+				<integer>76</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>22</integer>
+			<integer>65</integer>
 		</dict>
 		<key>Packet.pde</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>15</integer>
+				<integer>12</integer>
 				<key>line</key>
-				<integer>33</integer>
+				<integer>45</integer>
 			</dict>
 			<key>columnSelection</key>
 			<false/>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>22</integer>
+			<integer>24</integer>
 			<key>selectFrom</key>
 			<dict>
 				<key>column</key>
-				<integer>10</integer>
+				<integer>6</integer>
 				<key>line</key>
-				<integer>33</integer>
+				<integer>45</integer>
 			</dict>
 			<key>selectTo</key>
 			<dict>
 				<key>column</key>
 				<integer>16</integer>
 				<key>line</key>
-				<integer>33</integer>
+				<integer>45</integer>
 			</dict>
 		</dict>
 		<key>Pixel.pde</key>
@@ -188,14 +188,30 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>14</integer>
+				<integer>44</integer>
 				<key>line</key>
-				<integer>54</integer>
+				<integer>47</integer>
 			</dict>
+			<key>columnSelection</key>
+			<false/>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>17</integer>
+			<integer>12</integer>
+			<key>selectFrom</key>
+			<dict>
+				<key>column</key>
+				<integer>10</integer>
+				<key>line</key>
+				<integer>47</integer>
+			</dict>
+			<key>selectTo</key>
+			<dict>
+				<key>column</key>
+				<integer>44</integer>
+				<key>line</key>
+				<integer>47</integer>
+			</dict>
 		</dict>
 		<key>Serial.pde</key>
 		<dict>
@@ -216,14 +232,14 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>26</integer>
+				<integer>17</integer>
 				<key>line</key>
-				<integer>25</integer>
+				<integer>129</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>0</integer>
+			<integer>27</integer>
 		</dict>
 	</dict>
 	<key>openDocuments</key>
@@ -231,16 +247,16 @@
 		<string>P_AmorphousDisplay.pde</string>
 		<string>Packet.pde</string>
 		<string>Keyboard.pde</string>
-		<string>Canvas.pde</string>
 		<string>Pixel.pde</string>
+		<string>Canvas.pde</string>
 		<string>LoadImage.pde</string>
 		<string>ColorPalette.pde</string>
 		<string>Vision.pde</string>
 		<string>Serial.pde</string>
 	</array>
 	<key>showFileHierarchyDrawer</key>
-	<true/>
+	<false/>
 	<key>windowFrame</key>
-	<string>{{1169, 234}, {1224, 1047}}</string>
+	<string>{{500, 4}, {1167, 874}}</string>
 </dict>
 </plist>
