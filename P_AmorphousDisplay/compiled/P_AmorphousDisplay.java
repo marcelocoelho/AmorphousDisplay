@@ -6,8 +6,6 @@ import java.awt.*;
 import processing.video.*; 
 import processing.serial.*; 
 import hypermedia.video.*; 
-import processing.video.*; 
-import java.awt.*; 
 
 import java.applet.*; 
 import java.awt.Dimension; 
@@ -68,7 +66,7 @@ PApplet app = this;
 
 
 
-int numPixels = 4;		// pixels 1-3
+int numPixels = 20;		// pixels 1-3
 int numFrames = 10;		// frames 0-9
 
 Vector<Pixel> allPixels = new Vector<Pixel>();
@@ -78,6 +76,13 @@ Packet packet = new Packet(0xA0, 0x0F);
 DisplayManager displayManager;
 
 PixelController pixelController;
+
+
+
+PImage bgTexture;
+
+
+
 
 
 // INTERFACE POSITIONING STUFF, ACCESSIBLE BY ALL
@@ -101,8 +106,10 @@ int rightColumnY = leftColumnY;
 
 public void setup() {
 	
-	size(1300,800);
-	frameRate(60);
+	size(1300,700);
+	frameRate(10);
+		
+	bgTexture = loadImage("bg.png");	
 		
 	controlP5 = new ControlP5(this);
 	
@@ -122,9 +129,9 @@ public void setup() {
 
 public void draw() {
 	
-	background(125);
+	background(bgTexture);
 	
-	//loadCameraViews();
+	loadCameraViews();
 	
 }
 
@@ -237,7 +244,7 @@ public class Animation {
 	public void draw() {
 		
 		if (isPlaying) {
-			controlP5.getController("playPause").setCaptionLabel("pause");
+			controlP5.getController("playPause").setImages(loadImage("UI/pause-idle.png"), loadImage("UI/pause-over.png"), loadImage("UI/pause-active.png"));
 			println(currentFrame);
 
 			runningTime = runningTime + scrollSpeed/frameRate;
@@ -250,14 +257,12 @@ public class Animation {
 			}
 			
 		} else {
-			controlP5.getController("playPause").setCaptionLabel("play");
+			controlP5.getController("playPause").setImages(loadImage("UI/play-idle.png"), loadImage("UI/play-over.png"), loadImage("UI/play-active.png"));
 			currentFrame = (int)controlP5.getController("browser").getValue();
 			runningTime = currentFrame;
 			
 		}
-		//println(currentFrame);
-		
-		// updates position of timeline slider
+
 		controlP5.getController("browser").setValue(displayManager.animation.currentFrame);
 		
 	}
@@ -283,14 +288,13 @@ public void initAnimationInterface(float _x, float _y, float _w, float _speed) {
      		.setNumberOfTickMarks(numFrames)
 			.setCaptionLabel(" ");
      		;
-			//controlP5.getController("browser").setCaptionLabel(" ");
 					
 	controlP5.addButton("playPause",										// play or pause animation	
 			0,
 			PApplet.parseInt(_x), PApplet.parseInt(_y),
 			60, 20
 			);		
-			controlP5.getController("playPause").setCaptionLabel("Play");	
+		
 			
 	controlP5.addSlider("updateScrollSpeed")								// slider for scroll speed
 	   		.setPosition( PApplet.parseInt(_x) + 320-100, PApplet.parseInt(_y) )
@@ -314,19 +318,21 @@ public void initAnimationInterface(float _x, float _y, float _w, float _speed) {
 
 	/* ------  color palette related, moved it to a different class later? ---- */
 
-	controlP5.addButton("clearFrame",										// clear all frames	
+	controlP5.addButton("paintFrame",										// clear all frames	
 			0,
 			PApplet.parseInt(_x)+325, PApplet.parseInt(_y)-45,
 			70, 20
 			);		
-			controlP5.getController("clearFrame").setCaptionLabel("Clear Frame");
+			//controlP5.getController("paintFrame").setCaptionLabel("Paint Frame");
+			controlP5.getController("paintFrame").setImages(loadImage("UI/paint-idle.png"), loadImage("UI/paint-over.png"), loadImage("UI/paint-active.png"));
 
 	controlP5.addButton("clearAll",										// clear all frames	
 			0,
 			PApplet.parseInt(_x)+325, PApplet.parseInt(_y)-20,
 			70, 20
 			);		
-			controlP5.getController("clearAll").setCaptionLabel("Clear All");																									
+			//controlP5.getController("clearAll").setCaptionLabel("Clear All");	
+			controlP5.getController("clearAll").setImages(loadImage("UI/clearall-idle.png"), loadImage("UI/clearall-over.png"), loadImage("UI/clearall-active.png"));																								
 }
 
 public void playPause() {
@@ -343,8 +349,8 @@ public void clearAll() {
 	displayManager.canvas.clearAll();
 }
 
-public void clearFrame() {
-	displayManager.canvas.clearCurrentFrame();
+public void paintFrame() {
+	displayManager.canvas.paintCurrentFrame();
 }
 
 
@@ -405,8 +411,10 @@ public class Canvas {
 	}
 	
 	
-	public void clearCurrentFrame() {
-		allFrames.get(currentFrame).init();
+	public void paintCurrentFrame() {
+		//allFrames.get(currentFrame).init();
+		allFrames.get(currentFrame).paintFullFrame();
+		
 	}
 	
 	public void clearAll() {
@@ -635,7 +643,15 @@ public class Frame {
 		frameGraphic.background(0);		
 		frameGraphic.endDraw();	
 		
-		//pixelController.updateAllPixelsWithSingleFrame(frameGraphic);
+	}
+
+
+	public void paintFullFrame() {
+		
+		frameGraphic.beginDraw();
+		frameGraphic.background(displayManager.colorPalette.selectedColor);		
+		frameGraphic.endDraw();
+		
 	}
 	
 	
@@ -738,7 +754,64 @@ public class ColorPalette {
 	
 		selectedColor = color(0,0,0,255);
 		
-									     // column row
+		
+									     // column row				
+		// shades of grey
+		for (int i = 2; i <= 15; i=i+2) {
+			allSwatches.addElement(new Swatch(this,	i/2,	1,	remap(15-i), remap(15-i), remap(15-i)));			
+			
+		}
+		
+		// shades of green and blue
+		for (int i = 1; i <= 15; i++) {
+			allSwatches.addElement(new Swatch(this,	i,	2,	0, remap(i), remap(15-i)));			
+		}		
+		
+		// shades of red and blue
+		for (int i = 1; i <= 15; i++) {
+			allSwatches.addElement(new Swatch(this,	i,	3,	remap(i), 0, remap(15-i)));			
+		}		
+		
+		// shades of red and green
+		for (int i = 1; i <= 15; i++) {
+			allSwatches.addElement(new Swatch(this,	i,	4,	remap(i), remap(15-i), 0));			
+		}		
+		
+		// shades of red and green
+		for (int i = 1; i <= 8; i++) {
+			allSwatches.addElement(new Swatch(this,	i,	5,	remap(15-i), remap(15-i), 0));			
+		}		
+		
+		// shades of red and green
+		for (int i = 1; i <= 8; i++) {
+			allSwatches.addElement(new Swatch(this,	i,	6,	remap(15-i), 0, remap(15-i)));			
+		}		
+		
+		// shades of red and green
+		for (int i = 1; i <= 8; i++) {
+			allSwatches.addElement(new Swatch(this,	i,	7,	0, remap(15-i), remap(15-i)));			
+		}		
+		
+		/*
+		allSwatches.addElement(new Swatch(this,	1,	1,	255, 255, 255));							
+		allSwatches.addElement(new Swatch(this,	2,	1,	238, 238, 238));
+		allSwatches.addElement(new Swatch(this,	3,	1,	221, 221, 221));
+		allSwatches.addElement(new Swatch(this,	4,	1,	204, 255, 255));							
+		allSwatches.addElement(new Swatch(this,	5,	1,	187, 238, 238));
+		allSwatches.addElement(new Swatch(this,	6,	1,	170, 221, 221));
+		allSwatches.addElement(new Swatch(this,	7,	1,	153, 255, 255));							
+		allSwatches.addElement(new Swatch(this,	8,	1,	136, 238, 238));
+		allSwatches.addElement(new Swatch(this,	9,	1,	119, 221, 221));		
+		allSwatches.addElement(new Swatch(this,	10,	1,	102, 221, 221));
+		allSwatches.addElement(new Swatch(this,	11,	1,	85, 221, 221));
+		allSwatches.addElement(new Swatch(this,	12,	1,	68, 221, 221));
+		allSwatches.addElement(new Swatch(this,	13,	1,	51, 221, 221));						
+		allSwatches.addElement(new Swatch(this,	14,	1,	34, 221, 221));
+		allSwatches.addElement(new Swatch(this,	15,	1,	17, 221, 221));
+		allSwatches.addElement(new Swatch(this,	16,	1,	0, 221, 221));
+		*/	
+
+		/*							
 		allSwatches.addElement(new Swatch(this,	1,	1,	255, 0, 0));
 		allSwatches.addElement(new Swatch(this,	1,	2,	0, 255, 0));
 		allSwatches.addElement(new Swatch(this, 1, 	3,	0, 0, 255));
@@ -747,13 +820,20 @@ public class ColorPalette {
 		allSwatches.addElement(new Swatch(this, 2, 1, 	0, 0, 0));
 		allSwatches.addElement(new Swatch(this, 2, 2, 	125, 125, 125));		
 		allSwatches.addElement(new Swatch(this, 2, 3, 	255, 255, 255));
-		
+		*/
 		
 		
 		
 		app.registerDraw(this);
 		
 		
+	}
+	
+	public int remap(int _colorValue) {
+		
+		int returnColor = (int)map(_colorValue, 0, 15, 0, 255);
+		
+		return returnColor;
 	}
 	
 	
@@ -1035,37 +1115,42 @@ public void initLoadImg() {
 	// Load Image 
 	controlP5.addButton("loadImg",
 						0,
-						40, 550,
+						leftColumnX, 550,
 						60, 20
-						).setCaptionLabel("Load Image");
+						).setCaptionLabel("Image")
+						.setImages(loadImage("UI/image-idle.png"), loadImage("UI/image-over.png"), loadImage("UI/image-active.png"));																								
+						
 	
 	
 	
 	// Create Alpha
 	controlP5.addButton("loadAlpha",
 						0,
-						40, 575,
+						leftColumnX, 575,
 						60, 20
-						).setCaptionLabel("Load Alpha");	
+						).setCaptionLabel("Phase")
+						.setImages(loadImage("UI/alpha-idle.png"), loadImage("UI/alpha-over.png"), loadImage("UI/alpha-active.png"));	
 
 	// Create Period
 	controlP5.addButton("loadPeriod",
 						0,
-						40, 600,
+						leftColumnX, 600,
 						60, 20
-						).setCaptionLabel("Load Period");
+						).setCaptionLabel("Period")
+						.setImages(loadImage("UI/period-idle.png"), loadImage("UI/period-over.png"), loadImage("UI/period-active.png"));
 	
 	// Load Video
 	controlP5.addButton("loadMovie",
 						0,
-						40, 625,
+						leftColumnX, 625,
 						60, 20
-						).setCaptionLabel("Load Movie");
+						).setCaptionLabel("Movie")
+						.setImages(loadImage("UI/movie-idle.png"), loadImage("UI/movie-over.png"), loadImage("UI/movie-active.png"));
 
 	
 	// Save Current Frame
 	textfieldFrameName = controlP5.addTextfield("frameName")
-							.setPosition(40,650)
+							.setPosition(leftColumnX,650)
 							.setSize(100,20)
 							//.setAutoClear(true)
 							.setCaptionLabel("")
@@ -1074,14 +1159,15 @@ public void initLoadImg() {
 	
 	controlP5.addButton("saveSingleFrame",
 						0,
-						150, 650,
+						leftColumnX+110, 650,
 						60, 20
-						).setCaptionLabel("Save Frame");	
+						).setCaptionLabel("Save Frame")
+						.setImages(loadImage("UI/saveframe-idle.png"), loadImage("UI/saveframe-over.png"), loadImage("UI/saveframe-active.png"));	
 	
 	
 	// Save Movie
 	textfieldMovieName = controlP5.addTextfield("movieName")
-							.setPosition(40,675)
+							.setPosition(leftColumnX,675)
 							.setSize(100,20)
 							//.setAutoClear(true)
 							.setCaptionLabel("")
@@ -1089,9 +1175,10 @@ public void initLoadImg() {
 
 	controlP5.addButton("saveMovie",
 						0,
-						150, 675,
+						leftColumnX+110, 675,
 						60, 20
-						).setCaptionLabel("Save Movie");
+						).setCaptionLabel("Save Movie")
+						.setImages(loadImage("UI/savemovie-idle.png"), loadImage("UI/savemovie-over.png"), loadImage("UI/savemovie-active.png"));
 		
 }
 
@@ -1676,9 +1763,9 @@ void turnSinglePixelIrOff(int _pixelID) {
 
 
 
+//import processing.video.*;
 
-
-
+//import java.awt.*;
 
 
 //ControlP5 vCP5;

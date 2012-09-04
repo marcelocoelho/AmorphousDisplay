@@ -24,7 +24,64 @@ public class ColorPalette {
 	
 		selectedColor = color(0,0,0,255);
 		
-									     // column row
+		
+									     // column row				
+		// shades of grey
+		for (int i = 2; i <= 15; i=i+2) {
+			allSwatches.addElement(new Swatch(this,	i/2,	1,	remap(15-i), remap(15-i), remap(15-i)));			
+			
+		}
+		
+		// shades of green and blue
+		for (int i = 1; i <= 15; i++) {
+			allSwatches.addElement(new Swatch(this,	i,	2,	0, remap(i), remap(15-i)));			
+		}		
+		
+		// shades of red and blue
+		for (int i = 1; i <= 15; i++) {
+			allSwatches.addElement(new Swatch(this,	i,	3,	remap(i), 0, remap(15-i)));			
+		}		
+		
+		// shades of red and green
+		for (int i = 1; i <= 15; i++) {
+			allSwatches.addElement(new Swatch(this,	i,	4,	remap(i), remap(15-i), 0));			
+		}		
+		
+		// shades of red and green
+		for (int i = 1; i <= 8; i++) {
+			allSwatches.addElement(new Swatch(this,	i,	5,	remap(15-i), remap(15-i), 0));			
+		}		
+		
+		// shades of red and green
+		for (int i = 1; i <= 8; i++) {
+			allSwatches.addElement(new Swatch(this,	i,	6,	remap(15-i), 0, remap(15-i)));			
+		}		
+		
+		// shades of red and green
+		for (int i = 1; i <= 8; i++) {
+			allSwatches.addElement(new Swatch(this,	i,	7,	0, remap(15-i), remap(15-i)));			
+		}		
+		
+		/*
+		allSwatches.addElement(new Swatch(this,	1,	1,	255, 255, 255));							
+		allSwatches.addElement(new Swatch(this,	2,	1,	238, 238, 238));
+		allSwatches.addElement(new Swatch(this,	3,	1,	221, 221, 221));
+		allSwatches.addElement(new Swatch(this,	4,	1,	204, 255, 255));							
+		allSwatches.addElement(new Swatch(this,	5,	1,	187, 238, 238));
+		allSwatches.addElement(new Swatch(this,	6,	1,	170, 221, 221));
+		allSwatches.addElement(new Swatch(this,	7,	1,	153, 255, 255));							
+		allSwatches.addElement(new Swatch(this,	8,	1,	136, 238, 238));
+		allSwatches.addElement(new Swatch(this,	9,	1,	119, 221, 221));		
+		allSwatches.addElement(new Swatch(this,	10,	1,	102, 221, 221));
+		allSwatches.addElement(new Swatch(this,	11,	1,	85, 221, 221));
+		allSwatches.addElement(new Swatch(this,	12,	1,	68, 221, 221));
+		allSwatches.addElement(new Swatch(this,	13,	1,	51, 221, 221));						
+		allSwatches.addElement(new Swatch(this,	14,	1,	34, 221, 221));
+		allSwatches.addElement(new Swatch(this,	15,	1,	17, 221, 221));
+		allSwatches.addElement(new Swatch(this,	16,	1,	0, 221, 221));
+		*/	
+
+		/*							
 		allSwatches.addElement(new Swatch(this,	1,	1,	255, 0, 0));
 		allSwatches.addElement(new Swatch(this,	1,	2,	0, 255, 0));
 		allSwatches.addElement(new Swatch(this, 1, 	3,	0, 0, 255));
@@ -33,13 +90,20 @@ public class ColorPalette {
 		allSwatches.addElement(new Swatch(this, 2, 1, 	0, 0, 0));
 		allSwatches.addElement(new Swatch(this, 2, 2, 	125, 125, 125));		
 		allSwatches.addElement(new Swatch(this, 2, 3, 	255, 255, 255));
-		
+		*/
 		
 		
 		
 		app.registerDraw(this);
 		
 		
+	}
+	
+	int remap(int _colorValue) {
+		
+		int returnColor = (int)map(_colorValue, 0, 15, 0, 255);
+		
+		return returnColor;
 	}
 	
 	

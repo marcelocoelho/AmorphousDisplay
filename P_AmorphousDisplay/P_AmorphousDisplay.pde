@@ -41,7 +41,7 @@ PApplet app = this;
 
 
 
-int numPixels = 4;		// pixels 1-3
+int numPixels = 20;		// pixels 1-3
 int numFrames = 10;		// frames 0-9
 
 Vector<Pixel> allPixels = new Vector<Pixel>();
@@ -51,6 +51,13 @@ Packet packet = new Packet(0xA0, 0x0F);
 DisplayManager displayManager;
 
 PixelController pixelController;
+
+
+
+PImage bgTexture;
+
+
+
 
 
 // INTERFACE POSITIONING STUFF, ACCESSIBLE BY ALL
@@ -74,8 +81,10 @@ int rightColumnY = leftColumnY;
 
 void setup() {
 	
-	size(1300,800);
+	size(1300,700);
 	frameRate(10);
+		
+	bgTexture = loadImage("bg.png");	
 		
 	controlP5 = new ControlP5(this);
 	
@@ -95,7 +104,7 @@ void setup() {
 
 void draw() {
 	
-	background(125);
+	background(bgTexture);
 	
 	loadCameraViews();
 	

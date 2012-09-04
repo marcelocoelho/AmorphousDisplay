@@ -99,7 +99,7 @@ public class Animation {
 	void draw() {
 		
 		if (isPlaying) {
-			controlP5.getController("playPause").setCaptionLabel("pause");
+			controlP5.getController("playPause").setImages(loadImage("UI/pause-idle.png"), loadImage("UI/pause-over.png"), loadImage("UI/pause-active.png"));
 			println(currentFrame);
 
 			runningTime = runningTime + scrollSpeed/frameRate;
@@ -112,14 +112,12 @@ public class Animation {
 			}
 			
 		} else {
-			controlP5.getController("playPause").setCaptionLabel("play");
+			controlP5.getController("playPause").setImages(loadImage("UI/play-idle.png"), loadImage("UI/play-over.png"), loadImage("UI/play-active.png"));
 			currentFrame = (int)controlP5.getController("browser").getValue();
 			runningTime = currentFrame;
 			
 		}
-		//println(currentFrame);
-		
-		// updates position of timeline slider
+
 		controlP5.getController("browser").setValue(displayManager.animation.currentFrame);
 		
 	}
@@ -145,14 +143,13 @@ void initAnimationInterface(float _x, float _y, float _w, float _speed) {
      		.setNumberOfTickMarks(numFrames)
 			.setCaptionLabel(" ");
      		;
-			//controlP5.getController("browser").setCaptionLabel(" ");
 					
 	controlP5.addButton("playPause",										// play or pause animation	
 			0,
 			int(_x), int(_y),
 			60, 20
 			);		
-			controlP5.getController("playPause").setCaptionLabel("Play");	
+		
 			
 	controlP5.addSlider("updateScrollSpeed")								// slider for scroll speed
 	   		.setPosition( int(_x) + 320-100, int(_y) )
@@ -176,19 +173,21 @@ void initAnimationInterface(float _x, float _y, float _w, float _speed) {
 
 	/* ------  color palette related, moved it to a different class later? ---- */
 
-	controlP5.addButton("clearFrame",										// clear all frames	
+	controlP5.addButton("paintFrame",										// clear all frames	
 			0,
 			int(_x)+325, int(_y)-45,
 			70, 20
 			);		
-			controlP5.getController("clearFrame").setCaptionLabel("Clear Frame");
+			//controlP5.getController("paintFrame").setCaptionLabel("Paint Frame");
+			controlP5.getController("paintFrame").setImages(loadImage("UI/paint-idle.png"), loadImage("UI/paint-over.png"), loadImage("UI/paint-active.png"));
 
 	controlP5.addButton("clearAll",										// clear all frames	
 			0,
 			int(_x)+325, int(_y)-20,
 			70, 20
 			);		
-			controlP5.getController("clearAll").setCaptionLabel("Clear All");																									
+			//controlP5.getController("clearAll").setCaptionLabel("Clear All");	
+			controlP5.getController("clearAll").setImages(loadImage("UI/clearall-idle.png"), loadImage("UI/clearall-over.png"), loadImage("UI/clearall-active.png"));																								
 }
 
 void playPause() {
@@ -205,8 +204,8 @@ void clearAll() {
 	displayManager.canvas.clearAll();
 }
 
-void clearFrame() {
-	displayManager.canvas.clearCurrentFrame();
+void paintFrame() {
+	displayManager.canvas.paintCurrentFrame();
 }
 
 
@@ -267,8 +266,10 @@ public class Canvas {
 	}
 	
 	
-	void clearCurrentFrame() {
-		allFrames.get(currentFrame).init();
+	void paintCurrentFrame() {
+		//allFrames.get(currentFrame).init();
+		allFrames.get(currentFrame).paintFullFrame();
+		
 	}
 	
 	void clearAll() {
@@ -497,7 +498,15 @@ public class Frame {
 		frameGraphic.background(0);		
 		frameGraphic.endDraw();	
 		
-		//pixelController.updateAllPixelsWithSingleFrame(frameGraphic);
+	}
+
+
+	void paintFullFrame() {
+		
+		frameGraphic.beginDraw();
+		frameGraphic.background(displayManager.colorPalette.selectedColor);		
+		frameGraphic.endDraw();
+		
 	}
 	
 	

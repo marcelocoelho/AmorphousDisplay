@@ -39,37 +39,42 @@ void initLoadImg() {
 	// Load Image 
 	controlP5.addButton("loadImg",
 						0,
-						40, 550,
+						leftColumnX, 550,
 						60, 20
-						).setCaptionLabel("Load Image");
+						).setCaptionLabel("Image")
+						.setImages(loadImage("UI/image-idle.png"), loadImage("UI/image-over.png"), loadImage("UI/image-active.png"));																								
+						
 	
 	
 	
 	// Create Alpha
 	controlP5.addButton("loadAlpha",
 						0,
-						40, 575,
+						leftColumnX, 575,
 						60, 20
-						).setCaptionLabel("Load Alpha");	
+						).setCaptionLabel("Phase")
+						.setImages(loadImage("UI/alpha-idle.png"), loadImage("UI/alpha-over.png"), loadImage("UI/alpha-active.png"));	
 
 	// Create Period
 	controlP5.addButton("loadPeriod",
 						0,
-						40, 600,
+						leftColumnX, 600,
 						60, 20
-						).setCaptionLabel("Load Period");
+						).setCaptionLabel("Period")
+						.setImages(loadImage("UI/period-idle.png"), loadImage("UI/period-over.png"), loadImage("UI/period-active.png"));
 	
 	// Load Video
 	controlP5.addButton("loadMovie",
 						0,
-						40, 625,
+						leftColumnX, 625,
 						60, 20
-						).setCaptionLabel("Load Movie");
+						).setCaptionLabel("Movie")
+						.setImages(loadImage("UI/movie-idle.png"), loadImage("UI/movie-over.png"), loadImage("UI/movie-active.png"));
 
 	
 	// Save Current Frame
 	textfieldFrameName = controlP5.addTextfield("frameName")
-							.setPosition(40,650)
+							.setPosition(leftColumnX,650)
 							.setSize(100,20)
 							//.setAutoClear(true)
 							.setCaptionLabel("")
@@ -78,14 +83,15 @@ void initLoadImg() {
 	
 	controlP5.addButton("saveSingleFrame",
 						0,
-						150, 650,
+						leftColumnX+110, 650,
 						60, 20
-						).setCaptionLabel("Save Frame");	
+						).setCaptionLabel("Save Frame")
+						.setImages(loadImage("UI/saveframe-idle.png"), loadImage("UI/saveframe-over.png"), loadImage("UI/saveframe-active.png"));	
 	
 	
 	// Save Movie
 	textfieldMovieName = controlP5.addTextfield("movieName")
-							.setPosition(40,675)
+							.setPosition(leftColumnX,675)
 							.setSize(100,20)
 							//.setAutoClear(true)
 							.setCaptionLabel("")
@@ -93,9 +99,10 @@ void initLoadImg() {
 
 	controlP5.addButton("saveMovie",
 						0,
-						150, 675,
+						leftColumnX+110, 675,
 						60, 20
-						).setCaptionLabel("Save Movie");
+						).setCaptionLabel("Save Movie")
+						.setImages(loadImage("UI/savemovie-idle.png"), loadImage("UI/savemovie-over.png"), loadImage("UI/savemovie-active.png"));
 		
 }
 
