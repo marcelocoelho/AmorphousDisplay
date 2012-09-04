@@ -224,7 +224,7 @@ void initVizControls() {
 	controlP5.addButton("labelPix",
 						0,
 						menuX, menuY+90,
-						60, 15
+						60, 25
 						);
 						
 						
@@ -233,7 +233,7 @@ void initVizControls() {
 	controlP5.addButton("matchPix",
 						0,
 						menuX+70, menuY+90,
-						60, 15
+						60, 25
 						);
 
 						

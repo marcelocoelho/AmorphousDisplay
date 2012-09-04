@@ -163,7 +163,7 @@ public class Pixel {
     hidden = true;
 	selected = false;
 	scanned = false;			// when true, pixel has been found by vision tracker
-	labelWithId = true;
+	labelWithId = false;
 	
 	allPixelColors = new color[numFrames];		// stores pixel colors for a whole animation
     

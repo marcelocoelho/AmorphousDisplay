@@ -196,7 +196,7 @@ public class DisplayManager {
 		
 
 		canvas = new Canvas(root, startPosition, dimension);		
-		colorPalette = new ColorPalette(startPosition.x, startPosition.y + dimension.y + 60);
+		colorPalette = new ColorPalette(startPosition.x, startPosition.y + dimension.y + 180);
 		animation	= new Animation(startPosition.x, startPosition.y + dimension.y, dimension.x);
 		
 		app.registerDraw(this);
@@ -320,7 +320,7 @@ public void initAnimationInterface(float _x, float _y, float _w, float _speed) {
 
 	controlP5.addButton("paintFrame",										// clear all frames	
 			0,
-			PApplet.parseInt(_x)+325, PApplet.parseInt(_y)-45,
+			leftColumnX+65, leftColumnY+frameHeight+180,
 			70, 20
 			);		
 			//controlP5.getController("paintFrame").setCaptionLabel("Paint Frame");
@@ -328,7 +328,7 @@ public void initAnimationInterface(float _x, float _y, float _w, float _speed) {
 
 	controlP5.addButton("clearAll",										// clear all frames	
 			0,
-			PApplet.parseInt(_x)+325, PApplet.parseInt(_y)-20,
+			leftColumnX, leftColumnY+frameHeight+50,
 			70, 20
 			);		
 			//controlP5.getController("clearAll").setCaptionLabel("Clear All");	
@@ -841,7 +841,7 @@ public class ColorPalette {
 		
 		if(anySelected) {		
 			fill(selectedColor);
-			rect(PApplet.parseInt(x), PApplet.parseInt(y), 40, 20);			
+			rect(PApplet.parseInt(x), PApplet.parseInt(y), 60, 25);			
 		} else {
 			drawUnselected();
 		}
@@ -857,11 +857,11 @@ public class ColorPalette {
 		pushMatrix();
 		translate(posX, posY);
 		
-		rect(0, 0, 40, 20);
+		rect(0, 0, 60, 25);
 		
-		stroke(color(255, 0, 0));
-		line(0, 0, 40, 20);
-		line(0, 20, 40, 0);					
+		//stroke(color(255, 0, 0));
+		//line(0, 0, 40, 20);
+		//line(0, 20, 40, 0);					
 	
 		popMatrix();
 	}
@@ -1115,7 +1115,7 @@ public void initLoadImg() {
 	// Load Image 
 	controlP5.addButton("loadImg",
 						0,
-						leftColumnX, 550,
+						leftColumnX+60, leftColumnY+frameHeight+50,
 						60, 20
 						).setCaptionLabel("Image")
 						.setImages(loadImage("UI/image-idle.png"), loadImage("UI/image-over.png"), loadImage("UI/image-active.png"));																								
@@ -1126,7 +1126,7 @@ public void initLoadImg() {
 	// Create Alpha
 	controlP5.addButton("loadAlpha",
 						0,
-						leftColumnX, 575,
+						leftColumnX+120, leftColumnY+frameHeight+50,
 						60, 20
 						).setCaptionLabel("Phase")
 						.setImages(loadImage("UI/alpha-idle.png"), loadImage("UI/alpha-over.png"), loadImage("UI/alpha-active.png"));	
@@ -1134,7 +1134,7 @@ public void initLoadImg() {
 	// Create Period
 	controlP5.addButton("loadPeriod",
 						0,
-						leftColumnX, 600,
+						leftColumnX+180, leftColumnY+frameHeight+50,
 						60, 20
 						).setCaptionLabel("Period")
 						.setImages(loadImage("UI/period-idle.png"), loadImage("UI/period-over.png"), loadImage("UI/period-active.png"));
@@ -1142,7 +1142,7 @@ public void initLoadImg() {
 	// Load Video
 	controlP5.addButton("loadMovie",
 						0,
-						leftColumnX, 625,
+						leftColumnX+240, leftColumnY+frameHeight+50,
 						60, 20
 						).setCaptionLabel("Movie")
 						.setImages(loadImage("UI/movie-idle.png"), loadImage("UI/movie-over.png"), loadImage("UI/movie-active.png"));
@@ -1150,8 +1150,8 @@ public void initLoadImg() {
 	
 	// Save Current Frame
 	textfieldFrameName = controlP5.addTextfield("frameName")
-							.setPosition(leftColumnX,650)
-							.setSize(100,20)
+							.setPosition(leftColumnX,leftColumnY+frameHeight+100)
+							.setSize(100,25)
 							//.setAutoClear(true)
 							.setCaptionLabel("")
 							;
@@ -1159,7 +1159,7 @@ public void initLoadImg() {
 	
 	controlP5.addButton("saveSingleFrame",
 						0,
-						leftColumnX+110, 650,
+						leftColumnX+110, leftColumnY+frameHeight+100,
 						60, 20
 						).setCaptionLabel("Save Frame")
 						.setImages(loadImage("UI/saveframe-idle.png"), loadImage("UI/saveframe-over.png"), loadImage("UI/saveframe-active.png"));	
@@ -1167,15 +1167,15 @@ public void initLoadImg() {
 	
 	// Save Movie
 	textfieldMovieName = controlP5.addTextfield("movieName")
-							.setPosition(leftColumnX,675)
-							.setSize(100,20)
+							.setPosition(leftColumnX, leftColumnY+frameHeight+135)
+							.setSize(100,25)
 							//.setAutoClear(true)
 							.setCaptionLabel("")
 							;	
 
 	controlP5.addButton("saveMovie",
 						0,
-						leftColumnX+110, 675,
+						leftColumnX+110, leftColumnY+frameHeight+135,
 						60, 20
 						).setCaptionLabel("Save Movie")
 						.setImages(loadImage("UI/savemovie-idle.png"), loadImage("UI/savemovie-over.png"), loadImage("UI/savemovie-active.png"));
@@ -1592,7 +1592,7 @@ public class Pixel {
     hidden = true;
 	selected = false;
 	scanned = false;			// when true, pixel has been found by vision tracker
-	labelWithId = true;
+	labelWithId = false;
 	
 	allPixelColors = new int[numFrames];		// stores pixel colors for a whole animation
     
@@ -1986,7 +1986,7 @@ public void initVizControls() {
 	controlP5.addButton("labelPix",
 						0,
 						menuX, menuY+90,
-						60, 15
+						60, 25
 						);
 						
 						
@@ -1995,7 +1995,7 @@ public void initVizControls() {
 	controlP5.addButton("matchPix",
 						0,
 						menuX+70, menuY+90,
-						60, 15
+						60, 25
 						);
 
 						

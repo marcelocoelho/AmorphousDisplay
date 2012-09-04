@@ -51,7 +51,7 @@ public class DisplayManager {
 		
 
 		canvas = new Canvas(root, startPosition, dimension);		
-		colorPalette = new ColorPalette(startPosition.x, startPosition.y + dimension.y + 60);
+		colorPalette = new ColorPalette(startPosition.x, startPosition.y + dimension.y + 180);
 		animation	= new Animation(startPosition.x, startPosition.y + dimension.y, dimension.x);
 		
 		app.registerDraw(this);
@@ -175,7 +175,7 @@ void initAnimationInterface(float _x, float _y, float _w, float _speed) {
 
 	controlP5.addButton("paintFrame",										// clear all frames	
 			0,
-			int(_x)+325, int(_y)-45,
+			leftColumnX+65, leftColumnY+frameHeight+180,
 			70, 20
 			);		
 			//controlP5.getController("paintFrame").setCaptionLabel("Paint Frame");
@@ -183,7 +183,7 @@ void initAnimationInterface(float _x, float _y, float _w, float _speed) {
 
 	controlP5.addButton("clearAll",										// clear all frames	
 			0,
-			int(_x)+325, int(_y)-20,
+			leftColumnX, leftColumnY+frameHeight+50,
 			70, 20
 			);		
 			//controlP5.getController("clearAll").setCaptionLabel("Clear All");	

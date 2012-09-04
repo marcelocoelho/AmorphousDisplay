@@ -111,7 +111,7 @@ public class ColorPalette {
 		
 		if(anySelected) {		
 			fill(selectedColor);
-			rect(int(x), int(y), 40, 20);			
+			rect(int(x), int(y), 60, 25);			
 		} else {
 			drawUnselected();
 		}
@@ -127,11 +127,11 @@ public class ColorPalette {
 		pushMatrix();
 		translate(posX, posY);
 		
-		rect(0, 0, 40, 20);
+		rect(0, 0, 60, 25);
 		
-		stroke(color(255, 0, 0));
-		line(0, 0, 40, 20);
-		line(0, 20, 40, 0);					
+		//stroke(color(255, 0, 0));
+		//line(0, 0, 40, 20);
+		//line(0, 20, 40, 0);					
 	
 		popMatrix();
 	}
