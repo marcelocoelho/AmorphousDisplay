@@ -16,7 +16,7 @@ public static final int GREYCODE = 4;
 
 
 
-
+public static final byte LOCATIONMASTER 	= 	0x9;
 public static final byte COLOR 	=	 	0xA;
 public static final byte STOREFRAME 	= 	0xB;
 public static final byte GOTOFRAME 	= 	0xC;
@@ -80,6 +80,12 @@ class Packet {
     myPort.write(remapColor(_value1) << 4 | remapColor(_value2));	// color red and green
     myPort.write(remapColor(_value3) << 4 | _value4);			// color blue and checksum (which we are not using now)
     
+	print(remapColor(_value1));
+	print("   ");
+	print(remapColor(_value2));	
+	print("   ");
+	println(remapColor(_value3));	
+
   }
 
 

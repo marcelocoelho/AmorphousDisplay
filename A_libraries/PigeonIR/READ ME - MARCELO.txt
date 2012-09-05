@@ -1,0 +1,8 @@
+
+
+
+There are two main modifications here:
+
+- The cpu clock is generic, meaning I changed it so it's not Arduino dependent
+
+- I started a receivePigeon and sendPigeon functions that could allow for very long message transmissions

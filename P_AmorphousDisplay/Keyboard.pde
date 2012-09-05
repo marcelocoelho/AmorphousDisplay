@@ -40,6 +40,29 @@ public void keyPressed() {
 	if (key == '0') packet.sendNew(0, GOTOFRAME, 0, 0, 0, 9);	
 	
 	
+	// USED FOR PAINT MODE, FRAME 0
+	if (key == 'o') {
+		
+		syncVirtualAndPhysical = !syncVirtualAndPhysical;
+		
+		/*
+		for (int p = 0; p < numPixels; p++) {
+			packet.sendNew(p+1, COLOR, int(red(allPixels.get(p).allPixelColors[0])) , int(green(allPixels.get(p).allPixelColors[0])), int(blue(allPixels.get(p).allPixelColors[0])), 0 );	
+		}
+		*/
+	}
+	
+	
+	
+	// USED TO ENABLE MASTER PIXEL MODE
+	if (key == 'y') {
+		singlePixelTracking = true;
+	}
+	if (key == 'u') {
+		singlePixelTracking = false;
+	}
+	
+	
 	if (key =='q') {
 		// send all frames of one pixel to all pixels
     	for (int f = 0; f < numFrames; f++) {

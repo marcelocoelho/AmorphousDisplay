@@ -66,7 +66,7 @@ PApplet app = this;
 
 
 
-int numPixels = 20;		// pixels 1-3
+int numPixels = 4;		// pixels 1-3
 int numFrames = 10;		// frames 0-9
 
 Vector<Pixel> allPixels = new Vector<Pixel>();
@@ -127,11 +127,16 @@ public void setup() {
 }
 
 
+
 public void draw() {
 	
 	background(bgTexture);
 	
 	loadCameraViews();
+	
+	
+	// a bit of a hack for paint mode
+	syncPixels();
 	
 }
 
@@ -994,6 +999,29 @@ public void keyPressed() {
 	if (key == '0') packet.sendNew(0, GOTOFRAME, 0, 0, 0, 9);	
 	
 	
+	// USED FOR PAINT MODE, FRAME 0
+	if (key == 'o') {
+		
+		syncVirtualAndPhysical = !syncVirtualAndPhysical;
+		
+		/*
+		for (int p = 0; p < numPixels; p++) {
+			packet.sendNew(p+1, COLOR, int(red(allPixels.get(p).allPixelColors[0])) , int(green(allPixels.get(p).allPixelColors[0])), int(blue(allPixels.get(p).allPixelColors[0])), 0 );	
+		}
+		*/
+	}
+	
+	
+	
+	// USED TO ENABLE MASTER PIXEL MODE
+	if (key == 'y') {
+		singlePixelTracking = true;
+	}
+	if (key == 'u') {
+		singlePixelTracking = false;
+	}
+	
+	
 	if (key =='q') {
 		// send all frames of one pixel to all pixels
     	for (int f = 0; f <  numFrames; f++) {
@@ -1339,7 +1367,7 @@ public static final int GREYCODE = 4;
 
 
 
-
+public static final byte LOCATIONMASTER 	= 	0x9;
 public static final byte COLOR 	=	 	0xA;
 public static final byte STOREFRAME 	= 	0xB;
 public static final byte GOTOFRAME 	= 	0xC;
@@ -1403,6 +1431,12 @@ class Packet {
     myPort.write(remapColor(_value1) << 4 | remapColor(_value2));	// color red and green
     myPort.write(remapColor(_value3) << 4 | _value4);			// color blue and checksum (which we are not using now)
     
+	print(remapColor(_value1));
+	print("   ");
+	print(remapColor(_value2));	
+	print("   ");
+	println(remapColor(_value3));	
+
   }
 
 
@@ -1763,6 +1797,36 @@ void turnSinglePixelIrOff(int _pixelID) {
 
 
 
+
+
+// THIS IS A BIT OF HACK TO GET PAINT MODE WORKING FOR A SINGLE FRAME
+
+boolean syncVirtualAndPhysical = false;
+int timerForPaintPixelTransmission = 0;
+
+public void syncPixels() {
+	
+	if (syncVirtualAndPhysical) {
+
+		if (timerForPaintPixelTransmission >  5) timerForPaintPixelTransmission = 0;
+
+		if (timerForPaintPixelTransmission == 0) {
+			
+			for (int p = 0; p <  numPixels; p++) {
+				packet.sendNew(p+1, COLOR, PApplet.parseInt(red(allPixels.get(p).allPixelColors[0])) , PApplet.parseInt(green(allPixels.get(p).allPixelColors[0])), PApplet.parseInt(blue(allPixels.get(p).allPixelColors[0])), 0 );	
+			}
+		}
+		timerForPaintPixelTransmission++;
+	}
+	
+}
+
+
+
+
+
+
+
 //import processing.video.*;
 
 //import java.awt.*;
@@ -1791,6 +1855,10 @@ int menuX = visionX;
 int menuY = 380+visionY;
 
 boolean displayId = false;
+
+
+boolean singlePixelTracking = false;
+int timerForMasterPixelTransmission = 0;
 
 
 
@@ -1867,6 +1935,21 @@ public void loadCameraViews() {
 
     }
 
+	// a bit of a hack to locate single pixel for master pixel interaction model
+	if (singlePixelTracking) {
+		println(blobs[0].centroid.x + "  " + blobs[0].centroid.y);
+		if (timerForMasterPixelTransmission >  5) timerForMasterPixelTransmission = 0;
+		
+		//println(timerForMasterPixelTransmission);
+		
+		if (timerForMasterPixelTransmission == 0) {
+			packet.sendNew(0, LOCATIONMASTER, blobs[0].centroid.x, blobs[0].centroid.y, 0, 0);
+		}
+		timerForMasterPixelTransmission++;
+		
+	}
+
+
 }
 
 
@@ -1876,12 +1959,12 @@ public void loadCameraViews() {
 public void matchPix() {
 	
 	// show IR in quick succession
-	for (int i = 0; i <  numPixels; i++) {
+	for (int i = 1; i <= numPixels; i++) {
 						
-			allPixels.get(i).scanned = true;
+			allPixels.get(i-1).scanned = true;
 			
 			// send IR			
-			packet.sendNew( i+1, IR, 119, 0, 0, 0 );			// ir=63; delay=240;
+			packet.sendNew( i, IR, 119, 0, 0, 0 );			// ir=63; delay=240;
 
 			// wait for pixels to display IR
 			delay(220);
@@ -1918,19 +2001,19 @@ public void matchPix() {
 			
 			if (oneBlob.length != 0) {
 				// assign pixel rectangle
-				allPixels.get(i).x = oneBlob[0].rectangle.x;
-				allPixels.get(i).y = oneBlob[0].rectangle.y;
-				allPixels.get(i).w = oneBlob[0].rectangle.width;
-				allPixels.get(i).h = oneBlob[0].rectangle.height;
+				allPixels.get(i-1).x = oneBlob[0].rectangle.x;
+				allPixels.get(i-1).y = oneBlob[0].rectangle.y;
+				allPixels.get(i-1).w = oneBlob[0].rectangle.width;
+				allPixels.get(i-1).h = oneBlob[0].rectangle.height;
 				
 				// assign pixel centroid
-				allPixels.get(i).centroid = oneBlob[0].centroid;
+				allPixels.get(i-1).centroid = oneBlob[0].centroid;
 
 				//long mp2 = System.currentTimeMillis()-mp1;
 				//println("[MATCHPIX] elapsed time: "+mp2);
 				
 			} else {
-				allPixels.get(i).scanned = false;	// pixels unsuccessfully matched will not be labeled
+				allPixels.get(i-1).scanned = false;	// pixels unsuccessfully matched will not be labeled
 			}
 
 	

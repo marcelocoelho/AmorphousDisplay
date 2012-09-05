@@ -31,6 +31,10 @@ int menuY = 380+visionY;
 boolean displayId = false;
 
 
+boolean singlePixelTracking = false;
+int timerForMasterPixelTransmission = 0;
+
+
 
 // Load up all camera related stuff
 // -------------------------------------------------------------------------------------------
@@ -105,6 +109,21 @@ void loadCameraViews() {
 
     }
 
+	// a bit of a hack to locate single pixel for master pixel interaction model
+	if (singlePixelTracking) {
+		println(blobs[0].centroid.x + "  " + blobs[0].centroid.y);
+		if (timerForMasterPixelTransmission > 5) timerForMasterPixelTransmission = 0;
+		
+		//println(timerForMasterPixelTransmission);
+		
+		if (timerForMasterPixelTransmission == 0) {
+			packet.sendNew(0, LOCATIONMASTER, blobs[0].centroid.x, blobs[0].centroid.y, 0, 0);
+		}
+		timerForMasterPixelTransmission++;
+		
+	}
+
+
 }
 
 
@@ -114,12 +133,12 @@ void loadCameraViews() {
 void matchPix() {
 	
 	// show IR in quick succession
-	for (int i = 0; i < numPixels; i++) {
+	for (int i = 1; i <= numPixels; i++) {
 						
-			allPixels.get(i).scanned = true;
+			allPixels.get(i-1).scanned = true;
 			
 			// send IR			
-			packet.sendNew( i+1, IR, 119, 0, 0, 0 );			// ir=63; delay=240;
+			packet.sendNew( i, IR, 119, 0, 0, 0 );			// ir=63; delay=240;
 
 			// wait for pixels to display IR
 			delay(220);
@@ -156,19 +175,19 @@ void matchPix() {
 			
 			if (oneBlob.length != 0) {
 				// assign pixel rectangle
-				allPixels.get(i).x = oneBlob[0].rectangle.x;
-				allPixels.get(i).y = oneBlob[0].rectangle.y;
-				allPixels.get(i).w = oneBlob[0].rectangle.width;
-				allPixels.get(i).h = oneBlob[0].rectangle.height;
+				allPixels.get(i-1).x = oneBlob[0].rectangle.x;
+				allPixels.get(i-1).y = oneBlob[0].rectangle.y;
+				allPixels.get(i-1).w = oneBlob[0].rectangle.width;
+				allPixels.get(i-1).h = oneBlob[0].rectangle.height;
 				
 				// assign pixel centroid
-				allPixels.get(i).centroid = oneBlob[0].centroid;
+				allPixels.get(i-1).centroid = oneBlob[0].centroid;
 
 				//long mp2 = System.currentTimeMillis()-mp1;
 				//println("[MATCHPIX] elapsed time: "+mp2);
 				
 			} else {
-				allPixels.get(i).scanned = false;	// pixels unsuccessfully matched will not be labeled
+				allPixels.get(i-1).scanned = false;	// pixels unsuccessfully matched will not be labeled
 			}
 
 	

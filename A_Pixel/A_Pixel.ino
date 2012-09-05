@@ -7,7 +7,7 @@
 
  */
 
-#include <IRremote.h>
+#include <PigeonIR.h>
 
 #define RECV_PIN 	2
 #define EMITIR_PIN 	6
@@ -16,17 +16,19 @@
 #define	LED_BLUE	11
 
 
-#define PIXELID		0x04
+#define PIXELID		0x01
 
 #define STARTNIBBLE	0xA
 
 
+#define MYLOCATION              0x8
+#define LOCATIONMASTER		0x9
 #define COLOR			0xA	
 #define STOREFRAME		0xB
 #define	GOTOFRAME		0xC
-#define PLAYALLFRAMES	0xD
+#define PLAYALLFRAMES	        0xD
 #define SHOWFRAME		0xE
-#define IR				0xF
+#define IR		        0xF
 	
 
 
@@ -122,6 +124,13 @@ void parseRcvdMessage(long rcvdMessage) {
 			case IR:				// Pulse IR 
 				pulseIR();
 				break;	
+
+                        case MYLOCATION:
+                                storeMyLocation();
+
+			case LOCATIONMASTER:			// Pulse IR 
+				myColorBasedOnMaster();
+				break;	
 												
 			default:
 				break;
@@ -151,6 +160,9 @@ void paintPixel() {
 	analogWrite(LED_RED,255-map(message.packet1, 0, 15, 0, 255));
 	analogWrite(LED_GREEN,255-map(message.packet2, 0, 15, 0, 255));
 	analogWrite(LED_BLUE,255-map(message.packet3, 0, 15, 0, 255));	
+
+       *(unsigned long*)&message = 0x00000000;
+      //Serial.println(message.packet2);
 }
 
 
@@ -190,6 +202,17 @@ void pulseIR() {
 	digitalWrite(EMITIR_PIN, HIGH);
 	//delay(GREYCODEDELAY);	
 }
+
+
+void storeMyLocation() {
+  
+}
+
+
+void myColorBasedOnMaster() {
+  
+}
+
 
 
 /*
