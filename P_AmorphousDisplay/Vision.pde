@@ -177,8 +177,8 @@ void matchPix() {
 				// assign pixel rectangle
 				allPixels.get(i-1).x = oneBlob[0].rectangle.x;
 				allPixels.get(i-1).y = oneBlob[0].rectangle.y;
-				allPixels.get(i-1).w = oneBlob[0].rectangle.width;
-				allPixels.get(i-1).h = oneBlob[0].rectangle.height;
+				allPixels.get(i-1).w = 20;//oneBlob[0].rectangle.width;
+				allPixels.get(i-1).h = 20;//oneBlob[0].rectangle.height;
 				
 				// assign pixel centroid
 				allPixels.get(i-1).centroid = oneBlob[0].centroid;

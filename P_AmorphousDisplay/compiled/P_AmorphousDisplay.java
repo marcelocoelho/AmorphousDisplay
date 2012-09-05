@@ -66,7 +66,7 @@ PApplet app = this;
 
 
 
-int numPixels = 4;		// pixels 1-3
+int numPixels = 16;		// pixels 1-3
 int numFrames = 10;		// frames 0-9
 
 Vector<Pixel> allPixels = new Vector<Pixel>();
@@ -1813,8 +1813,9 @@ public void syncPixels() {
 		if (timerForPaintPixelTransmission == 0) {
 			
 			for (int p = 0; p <  numPixels; p++) {
-				packet.sendNew(p+1, COLOR, PApplet.parseInt(red(allPixels.get(p).allPixelColors[0])) , PApplet.parseInt(green(allPixels.get(p).allPixelColors[0])), PApplet.parseInt(blue(allPixels.get(p).allPixelColors[0])), 0 );	
+				packet.sendNew(p+1, STOREFRAME, PApplet.parseInt(red(allPixels.get(p).allPixelColors[displayManager.animation.currentFrame-1])) , PApplet.parseInt(green(allPixels.get(p).allPixelColors[displayManager.animation.currentFrame-1])), PApplet.parseInt(blue(allPixels.get(p).allPixelColors[displayManager.animation.currentFrame-1])), 0 );	
 			}
+			packet.sendNew(0, GOTOFRAME, 0, 0, 0, 0);
 		}
 		timerForPaintPixelTransmission++;
 	}
@@ -1823,7 +1824,36 @@ public void syncPixels() {
 
 
 
+/* BACKUP
+*	
+*	
+*	
+*	
+*	
+*	
+*	
 
+boolean syncVirtualAndPhysical = false;
+int timerForPaintPixelTransmission = 0;
+
+void syncPixels() {
+	
+	if (syncVirtualAndPhysical) {
+
+		if (timerForPaintPixelTransmission > 5) timerForPaintPixelTransmission = 0;
+
+		if (timerForPaintPixelTransmission == 0) {
+			
+			for (int p = 0; p < numPixels; p++) {
+				packet.sendNew(p+1, COLOR, int(red(allPixels.get(p).allPixelColors[displayManager.animation.currentFrame-1])) , int(green(allPixels.get(p).allPixelColors[displayManager.animation.currentFrame-1])), int(blue(allPixels.get(p).allPixelColors[displayManager.animation.currentFrame-1])), 0 );	
+			}
+		}
+		timerForPaintPixelTransmission++;
+	}
+	
+}
+*	
+*	*/
 
 
 
@@ -2003,8 +2033,8 @@ public void matchPix() {
 				// assign pixel rectangle
 				allPixels.get(i-1).x = oneBlob[0].rectangle.x;
 				allPixels.get(i-1).y = oneBlob[0].rectangle.y;
-				allPixels.get(i-1).w = oneBlob[0].rectangle.width;
-				allPixels.get(i-1).h = oneBlob[0].rectangle.height;
+				allPixels.get(i-1).w = 20;//oneBlob[0].rectangle.width;
+				allPixels.get(i-1).h = 20;//oneBlob[0].rectangle.height;
 				
 				// assign pixel centroid
 				allPixels.get(i-1).centroid = oneBlob[0].centroid;

@@ -16,7 +16,7 @@
 #define	LED_BLUE	11
 
 
-#define PIXELID		0x01
+#define PIXELID		0x10
 
 #define STARTNIBBLE	0xA
 
